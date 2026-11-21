@@ -1,7 +1,7 @@
 {
-  "name": "Atlas Codex + Voyager's Log — NMS Companion",
+  "name": "Atlas Codex — NMS Companion",
   "short_name": "Atlas Codex",
-  "description": "NMS companion: 226-item codex plus per-system survey log with Holo-League diary. Fan-made, unofficial, offline-first.",
+  "description": "NMS companion: codex, system survey log with Holo-League diary, and fishing diary. Fan-made, unofficial, offline-first.",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",

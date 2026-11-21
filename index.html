@@ -76,6 +76,14 @@ kbd{background:#000;border:1px solid #333;border-radius:6px;padding:1px 6px;font
 #tabbar{display:flex;gap:8px;padding:0 0 12px}
 #tabbar button{flex:1;padding:11px;border-radius:11px;border:1px solid rgba(214,178,94,.3);background:transparent;color:var(--muted);font-size:13.5px}
 #tabbar button.on{background:linear-gradient(180deg,#e8cd85,#c49c3f);color:#141000;font-weight:800;border:none}
+#viewFish .frow{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:8px}
+#viewFish input,#viewFish select{background:#060b12;border:1px solid rgba(255,255,255,.12);color:var(--text);border-radius:9px;padding:10px;font-size:13px;width:100%}
+#viewFish .fishrow{display:flex;gap:8px;align-items:flex-start;background:linear-gradient(180deg,#122032,#0a1320);border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:11px;margin-bottom:8px}
+#viewFish .fishrow b{font-size:14px}
+#viewFish .fishrow span{display:block;font-size:12px;color:var(--muted);margin-top:2px}
+#viewFish .ftag{color:var(--teal)}
+#viewFish .fnote{color:#c2cddc;font-style:italic}
+#viewFish .fbar{display:flex;gap:8px;margin-bottom:10px}
 #logDash :root {--bg:#060b12;--card:#0e1826;--card2:#122032;--gold:#d6b25e;--gold2:#f0d99a;--teal:#6ef2e1;--muted:#8fa0b5;--text:#e9eef5}
 #logDash * {box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 #logDash body {margin:0;background:radial-gradient(1100px 500px at 50% -10%,#14273f 0%,var(--bg) 60%) fixed,var(--bg);color:var(--text);font-family:Inter,system-ui,sans-serif;min-height:100vh}
@@ -142,12 +150,12 @@ kbd{background:#000;border:1px solid #333;border-radius:6px;padding:1px 6px;font
 <div class="searchrow"><input id="q" type="search" placeholder="Search items, recipes, e.g. chromatic, stasis, tritium…" autocomplete="off"><select id="sort"><option value="name">A–Z</option><option value="valueDesc">Value ↓</option><option value="valueAsc">Value ↑</option></select></div>
 <div class="chips" id="chips"></div>
 </div></header>
-<div class="wrap"><div id="tabbar"><button id="tabCodex" class="on">📖 Codex</button><button id="tabLog">🗺️ Survey Log</button></div></div>
+<div class="wrap"><div id="tabbar"><button id="tabCodex" class="on">📖 Codex</button><button id="tabLog">🗺️ Survey</button><button id="tabFish">🎣 Fishing</button></div></div>
 <div id="viewCodex">
 
 <div class="wrap">
 <div class="hero"><h2>A traveller's catalogue, bound in starlight.</h2>
-<p><b>Codex v8.0 · Codex + Survey Log dashboard · Game: Voyagers 6.x</b> · Refreshed Nov 2026. Descriptions, base values in <b>Units (u)</b>, crafting, <b>Refiner</b> &amp; <b>Nutrient Processor</b> combinations. Tap any entry for full provenance. ★ = add to your personal expedition favourites (saved on this device). Values are base game values — wealthy systems pay more.</p><p class="note" style="margin-top:8px">Update-ready: data lives in one <kbd>DATABASE</kbd> array — new patch? Append entries, bump version above, done. Full catalogue in progress: Elements → Alloys → Trade → Curiosities → Cooking → Baits/Fossils → Uniques.</p></div>
+<p><b>Codex v9.0 · Codex + Survey + Fishing diary · Game: Voyagers 6.x</b> · Refreshed Nov 2026. Descriptions, base values in <b>Units (u)</b>, crafting, <b>Refiner</b> &amp; <b>Nutrient Processor</b> combinations. Tap any entry for full provenance. ★ = add to your personal expedition favourites (saved on this device). Values are base game values — wealthy systems pay more.</p><p class="note" style="margin-top:8px">Update-ready: data lives in one <kbd>DATABASE</kbd> array — new patch? Append entries, bump version above, done. Full catalogue in progress: Elements → Alloys → Trade → Curiosities → Cooking → Baits/Fossils → Uniques.</p></div>
 <div class="grid" id="grid"></div>
 <p class="note">To extend: open this file and edit the <kbd>DATABASE</kbd> array at the top of the script — each entry is self-documenting. No build step, works fully offline. Data compiled for the Worlds / Aquarius era; treat values as guide, not scripture.</p>
 </div>
@@ -177,13 +185,29 @@ kbd{background:#000;border:1px solid #333;border-radius:6px;padding:1px 6px;font
 
 
 </div></section>
+<section id="viewFish" style="display:none"><div class="wrap">
+<div style="display:flex;gap:8px;align-items:center;margin:6px 0 10px"><input id="Fq" type="search" placeholder="Search catches…" autocomplete="off" style="flex:1;background:#0a1320;border:1px solid rgba(214,178,94,.25);color:var(--text);padding:11px 13px;border-radius:11px;font-size:14px"><span class="pill" id="Fstats" style="font-size:11.5px;background:rgba(0,0,0,.6);border:1px solid rgba(214,178,94,.35);border-radius:999px;padding:6px 10px;white-space:nowrap">—</span></div>
+<div class="frow" style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:8px">
+<input id="Fsp" placeholder="Species *">
+<input id="Fsy" placeholder="System *">
+<select id="Frar"><option>Common</option><option>Uncommon</option><option>Rare</option><option>Legendary</option></select>
+<select id="Fcls"><option value="—">Class —</option><option>C</option><option>B</option><option>A</option><option>S</option></select>
+<input id="Fkg" placeholder="Size (kg)" inputmode="decimal">
+<input id="Flure" placeholder="Lure / bait">
+<input id="Fwater" placeholder="Planet / water / depth">
+<select id="Fcond"><option value="—">Conditions —</option><option>Day</option><option>Night</option><option>Storm</option><option>Day + Storm</option><option>Night + Storm</option></select>
+</div>
+<input id="Fnt" placeholder="Notes: exact spot, record?, cooked into…" style="margin-bottom:8px">
+<div class="fbar"><button class="btn primary" id="Fadd" style="flex:1;padding:12px;border-radius:11px;background:linear-gradient(180deg,#e8cd85,#c49c3f);color:#171106;font-weight:800;border:none;font-size:14px">+ Log catch</button><button class="btn" id="Fexport" style="flex:0 0 auto;padding:12px;border-radius:11px;border:1px solid rgba(214,178,94,.35);background:transparent;color:var(--text)">⤓</button></div>
+<div id="Flist" style="padding-bottom:140px"></div>
+</div></section>
 <div class="overlay" id="overlay"><div class="sheet">
 <div class="sheet-head"><div class="cat" id="mCat"></div><h2 id="mName"></h2><div class="meta" id="mMeta"></div><p id="mDesc"></p></div>
 <div class="sheet-body" id="mBody"></div>
 <div class="closebar"><button class="btn" id="favBig">☆ Favourite</button><button class="btn primary" id="close">Return to Codex</button></div>
 </div></div>
 
-<footer>ATLAS CODEX v8.0 — Codex + Survey Log · Voyagers era · unofficial fan companion · <span id="footCount"></span></footer>
+<footer>ATLAS CODEX v9.0 — Codex + Survey + Fishing · Voyagers era · unofficial fan companion · <span id="footCount"></span></footer>
 
 <script>
 /* THUMBNAILS (optional, user-supplied):
@@ -617,7 +641,7 @@ function LopenSys(id){
 }
 function Lpersist(){Lcur.updated=Date.now();save();}
 $("LeName").oninput=e=>{if(Lcur){Lcur.name=e.target.value;Lpersist()}};
-[["eStar","star"],["eKind","kind"],["eFac","fac"],["eEco","eco"],["eWea","wea"],["eCon","con"]].forEach(([id,k])=>{$(id).onchange=e=>{if(Lcur){Lcur[k]=e.target.value;Lpersist()}}});
+[["LeStar","star"],["LeKind","kind"],["LeFac","fac"],["LeEco","eco"],["LeWea","wea"],["LeCon","con"]].forEach(([id,k])=>{$(id).onchange=e=>{if(Lcur){Lcur[k]=e.target.value;Lpersist()}}});
 $("Lclose").onclick=$("Lsave").onclick=()=>{$("Lov").classList.remove("open");Lcur=null;LrenderChips();Lrender()};
 $("Lov").addEventListener("click",e=>{if(e.target===$("Lov")){$("Lov").classList.remove("open");Lcur=null;LrenderChips();Lrender()}});
 $("Ldel").onclick=()=>{if(Lcur&&confirm("Delete this system log?")){DB=DB.filter(s=>s.id!==Lcur.id);save();Lcur=null;$("Lov").classList.remove("open");LrenderChips();Lrender()}};
@@ -628,10 +652,38 @@ $("LimportBtn").onclick=()=>$("Limport").click();
 $("Limport").onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{try{const d=JSON.parse(r.result);if(Array.isArray(d)){DB=d;save();LrenderChips();Lrender()}else alert("Not a log file.")}catch(err){alert("Could not read file.")}};r.readAsText(f)};
 LrenderChips();Lrender();
 
-/* ---- Survey Log dashboard (shares localStorage voyager-log) ---- */
-const tabC=document.getElementById('tabCodex'),tabL=document.getElementById('tabLog');
-function showTab(codex){document.getElementById('viewCodex').style.display=codex?'':'none';document.getElementById('viewLog').style.display=codex?'none':'';tabC.classList.toggle('on',codex);tabL.classList.toggle('on',!codex);if(!codex){LrenderChips();Lrender();}}
-tabC.onclick=()=>showTab(true);tabL.onclick=()=>showTab(false);
+/* ---- Fishing diary (localStorage voyager-fish) ---- */
+let FDB=[];try{FDB=JSON.parse(localStorage.getItem("voyager-fish")||"[]")}catch(e){FDB=[]}
+const Fsave=()=>localStorage.setItem("voyager-fish",JSON.stringify(FDB));
+function Fesc(s){return String(s||"").replace(/[&<>\"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]))}
+function Frender(){
+  const q=document.getElementById('Fq').value.trim().toLowerCase();
+  let list=[...FDB].sort((a,b)=>(b.ts||0)-(a.ts||0));
+  if(q)list=list.filter(x=>((x.sp||"")+" "+(x.sy||"")+" "+(x.lure||"")+" "+(x.nt||"")+" "+(x.water||"")).toLowerCase().includes(q));
+  const leg=FDB.filter(x=>x.rar==="Legendary").length;
+  document.getElementById('Fstats').textContent=FDB.length+" catches · 👑 "+leg+" legendary";
+  const L=document.getElementById('Flist');L.innerHTML="";
+  if(!list.length){L.innerHTML='<div class="empty" style="text-align:center;color:var(--muted);padding:40px 10px">No catches logged.<br><br>Fill species + system, tap + Log catch.</div>';return;}
+  list.forEach(x=>{
+    const d=document.createElement("div");d.className="fishrow";
+    d.innerHTML='<div><b>'+Fesc(x.sp||"Unknown fish")+'</b> <span class="ftag">'+Fesc(x.rar||"—")+' · Class '+Fesc(x.cls||"—")+(x.kg?" · "+Fesc(x.kg)+" kg":"")+'</span><span>'+Fesc(x.lure||"")+(x.sy?" · "+Fesc(x.sy):"")+(x.water?" · "+Fesc(x.water):"")+(x.cond&&x.cond!=="—"?" · "+Fesc(x.cond):"")+'</span>'+(x.nt?'<span class="fnote">'+Fesc(x.nt)+'</span>':"")+'</div><button class="mini danger" style="border:1px solid #a33;background:#060b12;color:#f2a0a0;border-radius:9px;padding:9px 10px">×</button>';
+    d.querySelector("button").onclick=()=>{if(confirm("Release this catch?")){FDB=FDB.filter(y=>y.id!==x.id);Fsave();Frender();}};
+    L.appendChild(d);
+  });
+}
+document.getElementById('Fadd').onclick=()=>{
+  const g=id=>document.getElementById(id).value.trim();
+  if(!g('Fsp')&&!g('Fsy')){alert("Give it at least a species or a system.");return;}
+  FDB.push({id:"f"+Date.now(),sp:g('Fsp'),rar:g('Frar'),cls:g('Fcls'),kg:g('Fkg'),lure:g('Flure'),sy:g('Fsy'),water:g('Fwater'),cond:g('Fcond'),nt:g('Fnt'),ts:Date.now()});
+  ["Fsp","Fkg","Flure","Fsy","Fwater","Fnt"].forEach(id=>document.getElementById(id).value="");
+  Fsave();Frender();
+};
+document.getElementById('Fq').oninput=Frender;
+document.getElementById('Fexport').onclick=()=>{const b=new Blob([JSON.stringify(FDB,null,1)],{type:"application/json"});const a=document.createElement("a");a.href=URL.createObjectURL(b);a.download="voyager-fish.json";a.click()};
+/* ---- Tabs ---- */
+const tabC=document.getElementById('tabCodex'),tabL=document.getElementById('tabLog'),tabF=document.getElementById('tabFish');
+function showTab(w){document.getElementById('viewCodex').style.display=w==='c'?'':'none';document.getElementById('viewLog').style.display=w==='l'?'':'none';document.getElementById('viewFish').style.display=w==='f'?'':'none';tabC.classList.toggle('on',w==='c');tabL.classList.toggle('on',w==='l');tabF.classList.toggle('on',w==='f');if(w==='l'){LrenderChips();Lrender();}if(w==='f'){Frender();}}
+tabC.onclick=()=>showTab('c');tabL.onclick=()=>showTab('l');tabF.onclick=()=>showTab('f');
 </script>
 </body>
 </html>
