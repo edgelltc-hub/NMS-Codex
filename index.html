@@ -87,6 +87,8 @@ kbd{background:#000;border:1px solid #333;border-radius:6px;padding:1px 6px;font
 .sec li.linkrow{cursor:pointer}
 .sec li.linkrow:hover{background:rgba(110,242,225,.07)}
 .sec li.linkrow .q{color:var(--teal)}
+#linkOv{z-index:60}
+#linkTitle{font-size:20px;line-height:1.3}
 #logDash :root {--bg:#060b12;--card:#0e1826;--card2:#122032;--gold:#d6b25e;--gold2:#f0d99a;--teal:#6ef2e1;--muted:#8fa0b5;--text:#e9eef5}
 #logDash * {box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 #logDash body {margin:0;background:radial-gradient(1100px 500px at 50% -10%,#14273f 0%,var(--bg) 60%) fixed,var(--bg);color:var(--text);font-family:Inter,system-ui,sans-serif;min-height:100vh}
@@ -158,7 +160,7 @@ kbd{background:#000;border:1px solid #333;border-radius:6px;padding:1px 6px;font
 
 <div class="wrap">
 <div class="hero"><h2>A traveller's catalogue, bound in starlight.</h2>
-<p><b>Codex v14.0 · tap any → to jump · Game: Voyagers 6.x</b> · Refreshed Nov 2026. Descriptions, base values in <b>Units (u)</b>, crafting, <b>Refiner</b> &amp; <b>Nutrient Processor</b> combinations. Tap any entry for full provenance. ★ = add to your personal expedition favourites (saved on this device). Values are base game values — wealthy systems pay more.</p><p class="note" style="margin-top:8px">Update-ready: data lives in one <kbd>DATABASE</kbd> array — new patch? Append entries, bump version above, done. Full catalogue in progress: Elements → Alloys → Trade → Curiosities → Cooking → Baits/Fossils → Uniques.</p></div>
+<p><b>Codex v15.0 · tap a row, pick a destination · Game: Voyagers 6.x</b> · Refreshed Nov 2026. Descriptions, base values in <b>Units (u)</b>, crafting, <b>Refiner</b> &amp; <b>Nutrient Processor</b> combinations. Tap any entry for full provenance. ★ = add to your personal expedition favourites (saved on this device). Values are base game values — wealthy systems pay more.</p><p class="note" style="margin-top:8px">Update-ready: data lives in one <kbd>DATABASE</kbd> array — new patch? Append entries, bump version above, done. Full catalogue in progress: Elements → Alloys → Trade → Curiosities → Cooking → Baits/Fossils → Uniques.</p></div>
 <div class="grid" id="grid"></div>
 <p class="note">To extend: open this file and edit the <kbd>DATABASE</kbd> array at the top of the script — each entry is self-documenting. No build step, works fully offline. Data compiled for the Worlds / Aquarius era; treat values as guide, not scripture.</p>
 </div>
@@ -210,7 +212,8 @@ kbd{background:#000;border:1px solid #333;border-radius:6px;padding:1px 6px;font
 <div class="closebar"><button class="btn" id="favBig">☆ Favourite</button><button class="btn primary" id="close">Return to Codex</button></div>
 </div></div>
 
-<footer>ATLAS CODEX v14.0 — clickable combinations · Voyagers era · unofficial fan companion · <span id="footCount"></span></footer>
+<div class="overlay" id="linkOv"><div class="sheet"><div class="sheet-head"><div class="cat">Atlas junction</div><h2 id="linkTitle"></h2><p class="note" id="linkSub" style="margin:8px 0 0"></p></div><div class="sheet-body"><div class="sec"><h4>Travel to</h4><ul id="linkList"></ul></div></div><div class="closebar"><button class="btn primary" id="linkBack">← Back to entry</button></div></div></div>
+<footer>ATLAS CODEX v15.0 — junction picker · Voyagers era · unofficial fan companion · <span id="footCount"></span></footer>
 
 <script>
 /* THUMBNAILS (optional, user-supplied):
@@ -619,7 +622,7 @@ function render(){
     grid.appendChild(d);
   });
 }
-function sec(title,rows,link){if(!rows||!rows.length)return "";return `<div class="sec"><h4>${title}</h4><ul>${rows.map(r=>{const t=String(r[0]).replace(/"/g,"&quot;");return `<li${link?` class="linkrow" data-s="${t}"`:""}><span>${r[0]}</span><span class="q">${r[1]||""}</span></li>`}).join("")}</ul></div>`;}
+function sec(title,rows,link){if(!rows||!rows.length)return "";return `<div class="sec"><h4>${title}</h4><ul>${rows.map(r=>{const t=String(r[0]).replace(/"/g,"&quot;");return `<li${link?` class="linkrow" data-s="${t}" data-m="${link}"`:""}><span>${r[0]}</span><span class="q">${r[1]||""}</span></li>`}).join("")}</ul></div>`;}
 function openModal(it){
   current=it;
   document.getElementById("mCat").textContent=it.c+" — Codex Entry";
@@ -627,10 +630,10 @@ function openModal(it){
   document.getElementById("mDesc").textContent=it.d;
   document.getElementById("mMeta").innerHTML=`<div class="pill u">◈ ${val(it)} base</div><div class="pill">⬡ ${it.src||"Unknown provenance"}</div><div class="pill">${FAV.has(it.id)?"★ Favourited":"☆ Not favourited"}</div>`;
   let h="";
-  h+=sec("Crafting recipe",(it.craft||[]).map(x=>[x.n,"× "+x.q]),true);
+  h+=sec("Crafting recipe",(it.craft||[]).map(x=>[x.n,"× "+x.q]),"go");
   h+=sec("Refiner / Processor",(it.refine||[]).map(r=>[r.i,r.o]));
   if(it.cook)h+=sec("Nutrient Processor",[[it.cook,"🍳"]]);
-  h+=sec("Used in / Combinations",(it.use||[]).map(u=>[u,"→"]),true);
+  h+=sec("Used in / Combinations",(it.use||[]).map(u=>[u,"→"]),"pick");
   if(!h)h=`<p class="note">A simple relic — sell it, gift it, or refine it for quiet profit.</p>`;
   document.getElementById("mBody").innerHTML=h+`<p class="note" style="margin-top:12px">Traveller's note: base values shift with system economy (Boom / Wealthy pay more, using Nguồn Economy Scanner). Refiner ratios shown are the most dignified / efficient known.</p>`;
   document.getElementById("favBig").textContent=FAV.has(it.id)?"★ Favourited":"☆ Favourite";
@@ -638,7 +641,11 @@ function openModal(it){
 }
 document.getElementById("close").onclick=()=>overlay.classList.remove("open");
 function codexSearch(term){const words=String(term||"").toLowerCase().split(/\s+/).filter(Boolean);const hay=it=>(it.n+" "+it.d+" "+it.c+" "+(it.src||"")+" "+(it.cook||"")+" "+(it.use||[]).join(" ")+" "+(it.craft||[]).map(x=>x.n).join(" ")).toLowerCase();for(let n=words.length;n>=1;n--){const q=words.slice(0,n).join(" ");if(DATABASE.some(it=>hay(it).includes(q)))return q;}return term;}
-document.getElementById("mBody").addEventListener("click",e=>{const li=e.target.closest&&e.target.closest("li[data-s]");if(!li)return;const term=li.getAttribute("data-s");if(!term)return;overlay.classList.remove("open");showTab('c');activeCat='All';renderChips();q.value=codexSearch(term);render();window.scrollTo({top:0});});
+document.getElementById("mBody").addEventListener("click",e=>{const li=e.target.closest&&e.target.closest("li[data-s]");if(!li)return;const term=li.getAttribute("data-s"),mode=li.getAttribute("data-m")||"pick";if(!term)return;if(mode==="go"){const ex=DATABASE.find(i=>i.n.toLowerCase()===term.toLowerCase());if(ex){openModal(ex);return;}}openLinkPicker(term);});
+function candidatesFor(text,selfId){const stop=new Set("the,a,an,to,for,of,and,in,on,into,sell,buy,make,used,use,with,via,from,low,high,per,all,any,each,up,loops,loop,chain,premium,going,base,bulk,top,its,or,as,at,by,be,is,it,or,not,craft,refine,trade,route,demand,systems,system,planets,planet,wealthy,strong,tiers,tier,sell,buy,opposite".split(","));const words=String(text||"").toLowerCase().replace(/[^a-z0-9 ]/g," ").split(/\s+/).filter(w=>w.length>2&&!stop.has(w));const out=[];DATABASE.forEach(it=>{if(it.id===selfId)return;const name=it.n.toLowerCase();let s=0;words.forEach(w=>{if(name.includes(w))s+=w.length>4?2:1});if(String(text).toLowerCase().includes(name)&&name.length>3)s+=5;if(s>0)out.push([s,it])});out.sort((a,b)=>b[0]-a[0]);return out.slice(0,8).map(x=>x[1]);}
+function openLinkPicker(term){const selfId=current&&current.id;const cands=candidatesFor(term,selfId);document.getElementById("linkTitle").textContent="\u201c"+term+"\u201d";document.getElementById("linkSub").textContent=cands.length?cands.length+" matching relic"+(cands.length>1?"s":"")+" — choose your destination":"No direct relic matches — search instead.";const L=document.getElementById("linkList");L.innerHTML="";cands.forEach(it=>{const d=document.createElement("li");d.className="linkrow";d.innerHTML="<span>"+it.e+" "+it.n+"</span><span class=\"q\">"+it.c+"</span>";d.onclick=()=>{document.getElementById("linkOv").classList.remove("open");openModal(it)};L.appendChild(d)});const fb=document.createElement("li");fb.className="linkrow";fb.innerHTML="<span>Search the Codex</span><span class=\"q\">\u2192</span>";fb.onclick=()=>{document.getElementById("linkOv").classList.remove("open");overlay.classList.remove("open");showTab('c');activeCat='All';renderChips();q.value=codexSearch(term);render();window.scrollTo({top:0})};L.appendChild(fb);document.getElementById("linkOv").classList.add("open");}
+document.getElementById("linkBack").onclick=()=>document.getElementById("linkOv").classList.remove("open");
+document.getElementById("linkOv").addEventListener("click",e=>{if(e.target.id==="linkOv")document.getElementById("linkOv").classList.remove("open")});
 overlay.addEventListener("click",e=>{if(e.target===overlay)overlay.classList.remove("open");});
 document.getElementById("favBig").onclick=()=>{if(!current)return;FAV.has(current.id)?FAV.delete(current.id):FAV.add(current.id);saveFav();renderChips();render();openModal(current);};
 q.oninput=render;sortEl.onchange=render;
