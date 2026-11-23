@@ -1,7 +1,7 @@
 {
   "name": "Atlas Codex — NMS Companion",
   "short_name": "Atlas Codex",
-  "description": "NMS companion: codex, system survey log with Holo-League diary, and fishing diary. Fan-made, unofficial, offline-first.",
+  "description": "Dignified offline companion for No Man's Sky: 209 items, recipes, refiner, cooking, fossils, trade. Fan-made, unofficial.",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",

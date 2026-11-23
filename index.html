@@ -84,6 +84,9 @@ kbd{background:#000;border:1px solid #333;border-radius:6px;padding:1px 6px;font
 #viewFish .ftag{color:var(--teal)}
 #viewFish .fnote{color:#c2cddc;font-style:italic}
 #viewFish .fbar{display:flex;gap:8px;margin-bottom:10px}
+.sec li.linkrow{cursor:pointer}
+.sec li.linkrow:hover{background:rgba(110,242,225,.07)}
+.sec li.linkrow .q{color:var(--teal)}
 #logDash :root {--bg:#060b12;--card:#0e1826;--card2:#122032;--gold:#d6b25e;--gold2:#f0d99a;--teal:#6ef2e1;--muted:#8fa0b5;--text:#e9eef5}
 #logDash * {box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 #logDash body {margin:0;background:radial-gradient(1100px 500px at 50% -10%,#14273f 0%,var(--bg) 60%) fixed,var(--bg);color:var(--text);font-family:Inter,system-ui,sans-serif;min-height:100vh}
@@ -150,12 +153,12 @@ kbd{background:#000;border:1px solid #333;border-radius:6px;padding:1px 6px;font
 <div class="searchrow"><input id="q" type="search" placeholder="Search items, recipes, e.g. chromatic, stasis, tritium…" autocomplete="off"><select id="sort"><option value="name">A–Z</option><option value="valueDesc">Value ↓</option><option value="valueAsc">Value ↑</option></select></div>
 <div class="chips" id="chips"></div>
 </div></header>
-<div class="wrap"><div id="tabbar"><button id="tabCodex" class="on">📖 Codex</button><button id="tabLog">🗺️ Survey</button><button id="tabFish">🎣 Fishing</button></div></div>
+<div class="wrap"><div id="tabbar"><button id="tabCodex" class="on">📖 Codex</button><button id="tabSecrets">🧪 Secrets</button><button id="tabLog">🗺️ Survey</button><button id="tabFish">🎣 Fishing</button></div></div>
 <div id="viewCodex">
 
 <div class="wrap">
 <div class="hero"><h2>A traveller's catalogue, bound in starlight.</h2>
-<p><b>Codex v9.0 · Codex + Survey + Fishing diary · Game: Voyagers 6.x</b> · Refreshed Nov 2026. Descriptions, base values in <b>Units (u)</b>, crafting, <b>Refiner</b> &amp; <b>Nutrient Processor</b> combinations. Tap any entry for full provenance. ★ = add to your personal expedition favourites (saved on this device). Values are base game values — wealthy systems pay more.</p><p class="note" style="margin-top:8px">Update-ready: data lives in one <kbd>DATABASE</kbd> array — new patch? Append entries, bump version above, done. Full catalogue in progress: Elements → Alloys → Trade → Curiosities → Cooking → Baits/Fossils → Uniques.</p></div>
+<p><b>Codex v14.0 · tap any → to jump · Game: Voyagers 6.x</b> · Refreshed Nov 2026. Descriptions, base values in <b>Units (u)</b>, crafting, <b>Refiner</b> &amp; <b>Nutrient Processor</b> combinations. Tap any entry for full provenance. ★ = add to your personal expedition favourites (saved on this device). Values are base game values — wealthy systems pay more.</p><p class="note" style="margin-top:8px">Update-ready: data lives in one <kbd>DATABASE</kbd> array — new patch? Append entries, bump version above, done. Full catalogue in progress: Elements → Alloys → Trade → Curiosities → Cooking → Baits/Fossils → Uniques.</p></div>
 <div class="grid" id="grid"></div>
 <p class="note">To extend: open this file and edit the <kbd>DATABASE</kbd> array at the top of the script — each entry is self-documenting. No build step, works fully offline. Data compiled for the Worlds / Aquarius era; treat values as guide, not scripture.</p>
 </div>
@@ -174,8 +177,8 @@ kbd{background:#000;border:1px solid #333;border-radius:6px;padding:1px 6px;font
 <div class="sheet-head"><input id="LeName" placeholder="System name…"><div class="grid2">
 <div><label>Star colour</label><select id="LeStar"><option>Yellow</option><option>Red</option><option>Green</option><option>Blue</option><option>Purple</option></select></div>
 <div><label>Stars</label><select id="LeKind"><option>Single</option><option>Binary</option><option>Trinary</option></select></div>
-<div><label>Faction</label><select id="LeFac"><option>Gek</option><option>Korvax</option><option>Vy'keen</option><option>Unclaimed</option><option>Abandoned</option><option>Autophage</option></select></div>
-<div><label>Economy</label><select id="LeEco"><option>—</option><option>Trading</option><option>Manufacturing</option><option>Technology</option><option>Mining</option><option>Agriculture</option><option>Scientific</option><option>Power</option></select></div>
+<div><label>Faction</label><select id="LeFac"><option>Gek</option><option>Korvax</option><option>Vy'keen</option><option>Unclaimed</option><option>Abandoned</option><option>Autophage</option><option>Envoy</option></select></div>
+<div><label>Economy</label><select id="LeEco"><option>—</option><option>Trading</option><option>Advanced Materials</option><option>Scientific</option><option>Mining</option><option>Manufacturing</option><option>Technology</option><option>Power Generation</option></select></div>
 <div><label>Wealth</label><select id="LeWea"><option>—</option><option>Failing</option><option>Declining</option><option>Medium</option><option>Promising</option><option>Wealthy</option><option>Booming</option><option>Black Market</option></select></div>
 <div><label>Conflict</label><select id="LeCon"><option>—</option><option>Gentle</option><option>Low</option><option>Medium</option><option>High</option><option>Pirate-controlled</option></select></div>
 </div></div>
@@ -207,7 +210,7 @@ kbd{background:#000;border:1px solid #333;border-radius:6px;padding:1px 6px;font
 <div class="closebar"><button class="btn" id="favBig">☆ Favourite</button><button class="btn primary" id="close">Return to Codex</button></div>
 </div></div>
 
-<footer>ATLAS CODEX v9.0 — Codex + Survey + Fishing · Voyagers era · unofficial fan companion · <span id="footCount"></span></footer>
+<footer>ATLAS CODEX v14.0 — clickable combinations · Voyagers era · unofficial fan companion · <span id="footCount"></span></footer>
 
 <script>
 /* THUMBNAILS (optional, user-supplied):
@@ -344,7 +347,7 @@ const DATABASE = [
 {id:"spicy_stew",n:"Spicy Faecium Stew",c:"Cooking",v:1100,e:"🌶️",d:"Faecium + Gamma Weed. Burns going down, fortifies after.",src:"Processor: Faecium + Gamma Weed",craft:[],refine:[],cook:"Faecium + spice"},
 {id:"fossil",n:"Ancient Fossil / Bone",c:"Curiosities",v:80000,e:"🦴",d:"Relics-era remains — assemble full skeletons at the Palaeontology station for millions. Individual bones sell well.",src:"Relics update: fossil beds (dig with Terrain Manipulator)",craft:[],refine:[],use:["Assemble skeletons (high value)"]},
 {id:"fish_bait",n:"Fishing Bait (Aquarius)",c:"Cooking",v:50,e:"🎣",d:"Aquarius-era lures: Bionic Lures, plant-based chum. Different biomes bite different bait.",src:"Craft / Processor: Faecium + Sweetroot variants",craft:[],refine:[],cook:"Faecium + insect / plant mixes → Bait"},
-{id:"dream_aerial",n:"Dream Aerial",c:"Unique",v:300000,e:"📡",d:"Cursed-expedition relic. Hears voices from the void.",src:"The Cursed expedition / Anomaly",craft:[],refine:[]},
+{id:"dream_aerial",n:"Dream Aerial",c:"Unique",v:300000,e:"📡",d:"Hears voices from the void — and since Cosmos 7.0 it is reusable and CRAFTABLE. Burn one whenever you want to locate individual living frigates.",src:"Craftable (Cosmos+) / Anomaly",craft:[],refine:[],use:["Locate living frigates"]},
 {id:"anomaly_det",n:"Anomaly Detector",c:"Unique",v:50000,e:"🛸",d:"Pulses near anomalies. Activate in space to summon strange encounters.",src:"Space encounters, Nexus",craft:[],refine:[],use:["Trigger anomaly events"]},
 {id:"portable_reactor",n:"Portable Reactor",c:"Crafted",v:4200000,e:"☢️",d:"Fusion Ignitor ingredient: Liquid Explosive + Tokamak-style core.",src:"Craft: Liquid Explosive + Thermic Condensate chain",craft:[{n:"Liquid Explosive",q:"1"},{n:"Thermic Condensate",q:"1"}],refine:[],use:["Fusion Ignitor"]},
 {id:"liquid_explosive",n:"Liquid Explosive",c:"Crafted",v:800000,e:"💥",d:"Acid + Unstable Plasma. Handle gently.",src:"Craft: 1x Acid + 1x Unstable Plasma",craft:[{n:"Acid",q:"1"},{n:"Unstable Plasma",q:"1"}],refine:[],use:["Portable Reactor"]},
@@ -422,9 +425,13 @@ const DATABASE = [
 {id:"tr_vy_effigy",n:"Vy'keen Effigy",c:"Curiosities",v:20000,e:"🗿",d:"War-totem. Carry it and Vy'keen speak slower, as to kin.",src:"Ruins, Vy'keen missions",craft:[],refine:[]},
 {id:"tr_albumen2",n:"Albumen Pearl",c:"Trade",v:20000,e:"🦪",d:"Already catalogued — trade note: harvest from Armoured Clams; high demand in Gek economies.",src:"Underwater clams",craft:[],refine:[],use:["Sell, gift"]},
 {id:"tr_sac2",n:"Sac Venom",c:"Trade",v:25000,e:"💉",d:"Trade note: contraband-adjacent; sweet, lethal, lucrative.",src:"Carnivorous plants",craft:[],refine:[]},
-{id:"tr_econ_agri",n:"Agricultural Commodities",c:"Trade",v:1200,e:"🌾",d:"Economy-line goods (e.g. Non-Stick Piston? no — think: Faecium-grade produce, Star Bulb derivatives). Buy in Advanced Agricultural, sell in Manufacturing/Technology for up to +40%. Seven economies rotate demand.",src:"Galactic Trade Terminals",craft:[],refine:[],use:["Buy low (Agricultural) → sell high (Tech/Manufacturing)"]},
-{id:"tr_econ_mine",n:"Mining Commodities",c:"Trade",v:1500,e:"⛏️",d:"Ore-line goods (Unstable Gel, Dirt, etc.). Buy in Mining systems, sell in Manufacturing/Power.",src:"Trade Terminals",craft:[],refine:[],use:["Trade loop"]},
-{id:"tr_econ_tech",n:"Technology Commodities",c:"Trade",v:2500,e:"💾",d:"Circuit-line goods (Polarised Copper, etc.). Buy in Technology/Advanced Tech, sell in Mining/Power.",src:"Trade Terminals",craft:[],refine:[],use:["Trade loop"]},
+{id:"eco_trading",n:"Trading Economy (Route A)",c:"Trade",v:null,vn:"Varies · T1–T5",e:"📦",d:"Mercantile / Trading / Shipping / Commercial. Trade Commodity tiers: T1 Decrypted User Data, T2 Star Silk, T3 Comet Droplets, T4 Ion Sphere, T5 Teleport Coordinators. Buy at −20–30% Buy-mod systems; sell into Route B demand at +70–80%.",src:"Trade Terminals (Trading systems; T3 stocks all 5 tiers)",craft:[],refine:[],use:["Sell Route A goods into Route B systems"]},
+{id:"eco_mining",n:"Mining Economy (Route B)",c:"Trade",v:null,vn:"Varies · T1–T5",e:"⚙️",d:"Mining / Minerals / Ore Extraction / Prospecting. Tradable Minerals tiers: T1 Dirt, T2 Unrefined Pyrite Grease, T3 Bromide Salt, T4 Polychromatic Zirconium, T5 Re-latticed Arc Crystal. Strong (T3) systems stock all tiers in bulk.",src:"Trade Terminals (Mining systems)",craft:[],refine:[],use:["Sell Route B goods into Route A systems"]},
+{id:"eco_tech",n:"Technology Economy (Route B)",c:"Trade",v:null,vn:"Varies · T1–T5",e:"⚙️",d:"High Tech / Technology / Nano-construction / Engineering. Technology Parts tiers: T1 Decommissioned Circuit Board, T2 Welding Soap, T3 Ion Capacitor, T4 Autonomous Positioning Unit, T5 Quantum Accelerator.",src:"Trade Terminals (Technology systems)",craft:[],refine:[],use:["Sell Route B goods into Route A systems"]},
+{id:"eco_advmat",n:"Advanced Materials Economy (Route A)",c:"Trade",v:null,vn:"Varies · T1–T5",e:"📦",d:"Advanced Materials / Alchemical / Metal Processing / Material Fusion. Advanced Construction Materials tiers: T1 Nanotube Crate, T2 Self-Repairing Heridium, T3 Optical Solvent, T4 Five Dimensional Torus, T5 Superconducting Fibre. (Nanotube Crate ≠ crafted Carbon Nanotubes.)",src:"Trade Terminals (Advanced Materials systems)",craft:[],refine:[],use:["Sell Route A goods into Route B systems"]},
+{id:"eco_sci",n:"Scientific Economy (Route A)",c:"Trade",v:null,vn:"Varies · T1–T5",e:"📦",d:"Scientific / Research / Experimental / Mathematical. Scientific Components tiers: T1 De-Scented Pheromone Bottle, T2 Neutron Microscope, T3 Instability Injector, T4 Organic Piping, T5 Neural Duct.",src:"Trade Terminals (Scientific systems)",craft:[],refine:[],use:["Sell Route A goods into Route B systems"]},
+{id:"eco_manu",n:"Manufacturing Economy (Route B)",c:"Trade",v:null,vn:"Varies · T1–T5",e:"⚙️",d:"Manufacturing / Industrial / Construction / Mass Production. Industrial Components tiers: T1 Enormous Metal Cog, T2 Non-Stick Piston, T3 Six-Pronged Mesh Decoupler, T4 Holographic Crankshaft, T5 High Capacity Vector Compressor.",src:"Trade Terminals (Manufacturing systems)",craft:[],refine:[],use:["Sell Route B goods into Route A systems"]},
+{id:"eco_power",n:"Power Generation Economy (Route B)",c:"Trade",v:null,vn:"Varies · T1–T5",e:"⚙️",d:"Power Generation / Energy Supply / Fuel Generation / High Voltage. Tradable Energy tiers: T1 Spark Canister, T2 Industrial-Grade Battery, T3 Ohmic Gel, T4 Experimental Power Fluid, T5 Fusion Core.",src:"Trade Terminals (Power Generation systems)",craft:[],refine:[],use:["Sell Route B goods into Route A systems"]},
 {id:"tr_contraband",n:"Black-Market Contraband",c:"Trade",v:8000,e:"🤫",d:"Suspicious Packets, Counterfeit Circuits and their kin. Outlaw systems pay best; scan-jammers advised. Contents randomise into goods or Units.",src:"Outlaw stations, pirate loot",craft:[],refine:[{i:"Suspicious Packet (open)",o:"Random goods / Units"}],use:["Sell at black market"]},
 {id:"tr_salv_scrap",n:"Salvageable / Buried Scrap",c:"Curiosities",v:5000,e:"📦",d:"Voyagers-era goldmine: dig Salvaged Scrap → free random Corvette modules, plus Nanites/goods. Also at crashed freighters.",src:"Dig (any planet), crashed freighters",craft:[],refine:[],use:["Free Corvette modules"]},
 {id:"tr_cargo_pod",n:"Freighter Cargo Pods",c:"Trade",v:3000,e:"🛰️",d:"Shoot (pirate) or loot (derelict) pods → trade goods + Corvette modules. Derelict end-terminal: 3–5 random modules.",src:"Space piracy, derelicts, frigate expeditions",craft:[],refine:[],use:["Modules + goods"]},
@@ -442,7 +449,7 @@ const DATABASE = [
 {id:"fusion_core",n:"Warp Hypercore",c:"Crafted",v:70000,e:"🌀",d:"Storm-crystal + Chromatic warp fuel. 5x the jump of a cell.",src:"Craft: 1x Storm Crystal + 1x Chromatic",craft:[{n:"Storm Crystal",q:"1"},{n:"Chromatic Metal",q:"1"}],refine:[],use:["Hyperdrive (long jumps)"]},
 {id:"gold_dish1",n:"Gold dishes (top sellers)",c:"Cooking",v:3000,e:"👑",d:"Highest value-per-ingredient plates: Star Bramble Cake, Honey Cake, Chocolate Cakes, Pearl Ice-Cream, Hearty Meat Stew. Bake batters, chill custards, gift surplus to Cronus for Nanites + standing.",src:"Processor: batter/custard lines",craft:[],refine:[],cook:"Batter→Cake; Custard+Frost+flavour→Ice Cream"},
 {id:"cronus",n:"Iteration: Cronus (Anomaly grill)",c:"Cooking",v:0,e:"🧑‍🍳",d:"The Gek chef judges dishes. Feed him to learn missing recipes, earn Nanites and recipes. Multiplayer grill since Relics.",src:"Space Anomaly",craft:[],refine:[],cook:"Present any dish"},
-{id:"corv_mod",n:"Corvette Modules (all 16 families)",c:"Crafted",v:0,e:"🛸",d:"Cross-ref to Drydock: Cockpits, Habs, Landing Gear, Access, Thrusters, Weapons, Shields, Reactors, Wings/Stabilisers, Plating, Hull Connectors, Hull Attachments, Interior Walls, Accessways, Build Mats, Colours. See Corvette Drydock app for 3D dreaming.",src:"Buy / trade / dig / pirates / derelicts / Nexus / Expeditions 19–20",craft:[],refine:[],use:["Build Corvettes (max 160 parts)"]},
+{id:"corv_mod",n:"Corvette Modules (all families + Tractor Beam)",c:"Crafted",v:0,e:"🛸",d:"Cross-ref to Drydock: Cockpits, Habs, Landing Gear, Access, Thrusters, Weapons, Shields, Reactors, Wings/Stabilisers, Plating, Hull Connectors, Hull Attachments, Interior Walls, Accessways, Build Mats, Colours — plus the Cosmos Tractor Beam utility part for salvage. See Corvette Drydock app for 3D dreaming.",src:"Buy / trade / dig / pirates / derelicts / Nexus / expeditions / Workshop (Tractor Beam)",craft:[],refine:[],use:["Build Corvettes (max 100 parts placed)"]},
 {id:"exp_rewards",n:"Expedition Exclusives",c:"Unique",v:0,e:"🎖️",d:"Time-limited: Void Egg (Living Ship), Dream Aerial (Cursed), Basilisk Crown + Living Stone set + Skeletal Companion (Relics 18), Corvette modules (19–20). Reruns return via Nexus Quicksilver.",src:"Expeditions / Quicksilver",craft:[],refine:[]},
 // ==== COMPANIONS + EGG SEQUENCER + HOLO-ARENA (v7) ====
 {id:"comp_adopt",n:"Adopt a Companion",c:"Curiosities",v:0,e:"🐾",d:"Feed fauna Creature Pellets (2 per task): 30s follow-bond, then adopt. Trust starts 0.6 (0.7 hatched), rises with feeding/care. Mechanical fauna take Ion Batteries → Chewy Wires (1–10 Nanites each).",src:"Any planet (feed by family diet); Anomaly registry",craft:[],refine:[],use:["Summon (3–20m), ride, mine, scan, fight"]},
@@ -462,8 +469,110 @@ const DATABASE = [
 {id:"move_pool",n:"Move Pool",c:"Curiosities",v:0,e:"🌀",d:"Battle actions: strikes, heals, buffs, debuffs. Reach max genetic potential and further edits reroll the MOVE list instead of stats — the endgame is a perfect kit, not just big numbers.",src:"Max-potential companions",craft:[],refine:[],use:["Custom battle kit"]},
 {id:"train_loop",n:"Training Loop (keep ONE pet)",c:"Curiosities",v:0,e:"🏋️",d:"1 Battle → 2 Mutate → 3 Gene-edit (Agility/Health/Combat) → 4 Max potential → 5 Reroll moves. Feed Retroviral Pellets to jump-start. Small = dodge/first, large = survive — pick a frame, then out-train genetics.",src:"Arena + Sequencer",craft:[],refine:[],use:["Champion teams"]},
 {id:"trust",n:"Trust & Bonding",c:"Curiosities",v:0,e:"💛",d:"Feed, pet, adventure: trust ticks daily (+0.05/step, min 0.2). High-trust pets explore, mine, scan, find buildings and hazards for you (27 behaviours; Helpfulness/Independence gate them). Hungry + Lonely moods throttle work — keep them fed.",src:"Care daily",craft:[],refine:[],use:["Unlocks resource behaviours"]},
+// ==== TRADE SPECIFICS (v10) — 7 economies, 35 tiered goods, 2 routes ====
+{id:"cur_fasc",n:"Fascination Bead",c:"Curiosities",v:20000,e:"🔮",d:"Korvax curiosity: a prayer made solid. Found in green cases, monoliths and ruins.",src:"Ruins, monoliths, green cases",craft:[],refine:[]},
+{id:"cur_grahgrah",n:"Grahgrah",c:"Curiosities",v:20000,e:"🫧",d:"Vy'keen curiosity: war-spit sacrament. Same green-case circuit as its cousins.",src:"Ruins, monoliths, green cases",craft:[],refine:[]},
+{id:"cur_aqua",n:"Aquasphere",c:"Curiosities",v:40000,e:"🌊",d:"Crafting commodity: bottled ocean. Lifting one usually brings Sentinels.",src:"Hidden resource caches (Sentinel-guarded)",craft:[],refine:[],use:["Crafting + high-value sell"]},
+{id:"cur_dim",n:"Dimensional Matrix",c:"Curiosities",v:40000,e:"🧊",d:"Crafting commodity: folded geometry. Sentinel attention guaranteed.",src:"Hidden resource caches (Sentinel-guarded)",craft:[],refine:[],use:["Crafting + high-value sell"]},
+{id:"cur_neutrino",n:"Neutrino Module",c:"Curiosities",v:20000,e:"⚛️",d:"Trade commodity of the old lists; still moves well at any terminal.",src:"Cargo drops, terminals",craft:[],refine:[]},
+{id:"trm_decrypted",n:"Decrypted User Data",c:"Trade",v:null,vn:"Varies · T1",e:"📦",d:"T1 Trade Commodity, Trading produce (Route A). Buy at low-Buy-mod terminals, sell into Route B demand.",src:"Trade Terminals (Trading systems)",craft:[],refine:[],use:["Opposite-route premium"]},
+{id:"trm_starsilk",n:"Star Silk",c:"Trade",v:null,vn:"Varies · T2",e:"📦",d:"T2 Trade Commodity, Trading produce (Route A).",src:"Trade Terminals (Trading systems)",craft:[],refine:[],use:["Opposite-route premium"]},
+{id:"trm_comet",n:"Comet Droplets",c:"Trade",v:null,vn:"Varies · T3",e:"📦",d:"T3 Trade Commodity, Trading produce (Route A). T3/strong economies stock all tiers in bulk.",src:"Trade Terminals (Trading systems)",craft:[],refine:[],use:["Opposite-route premium"]},
+{id:"trm_ion",n:"Ion Sphere",c:"Trade",v:null,vn:"Varies · T4",e:"📦",d:"T4 Trade Commodity, Trading produce (Route A).",src:"Trade Terminals (Trading systems)",craft:[],refine:[],use:["Opposite-route premium"]},
+{id:"trm_teleport",n:"Teleport Coordinators",c:"Trade",v:null,vn:"Varies · T5",e:"📦",d:"T5 Trade Commodity, Trading produce (Route A). Top tier of its line — strongest margins.",src:"Trade Terminals (Trading systems)",craft:[],refine:[],use:["Opposite-route premium"]},
+{id:"trm_nanotube",n:"Nanotube Crate",c:"Trade",v:null,vn:"Varies · T1",e:"📦",d:"T1 Advanced Construction Material, Advanced Materials produce (Route A). Not the crafted Carbon Nanotubes.",src:"Trade Terminals (Advanced Materials systems)",craft:[],refine:[],use:["Opposite-route premium"]},
+{id:"trm_heridium",n:"Self-Repairing Heridium",c:"Trade",v:null,vn:"Varies · T2",e:"📦",d:"T2 Advanced Construction Material, Advanced Materials produce (Route A).",src:"Trade Terminals (Advanced Materials systems)",craft:[],refine:[],use:["Opposite-route premium"]},
+{id:"trm_optical",n:"Optical Solvent",c:"Trade",v:null,vn:"Varies · T3",e:"📦",d:"T3 Advanced Construction Material, Advanced Materials produce (Route A).",src:"Trade Terminals (Advanced Materials systems)",craft:[],refine:[],use:["Opposite-route premium"]},
+{id:"trm_torus",n:"Five Dimensional Torus",c:"Trade",v:null,vn:"Varies · T4",e:"📦",d:"T4 Advanced Construction Material, Advanced Materials produce (Route A).",src:"Trade Terminals (Advanced Materials systems)",craft:[],refine:[],use:["Opposite-route premium"]},
+{id:"trm_supercond",n:"Superconducting Fibre",c:"Trade",v:null,vn:"Varies · T5",e:"📦",d:"T5 Advanced Construction Material, Advanced Materials produce (Route A).",src:"Trade Terminals (Advanced Materials systems)",craft:[],refine:[],use:["Opposite-route premium"]},
+{id:"trm_phero",n:"De-Scented Pheromone Bottle",c:"Trade",v:null,vn:"Varies · T1",e:"📦",d:"T1 Scientific Component, Scientific produce (Route A).",src:"Trade Terminals (Scientific systems)",craft:[],refine:[],use:["Opposite-route premium"]},
+{id:"trm_neutron",n:"Neutron Microscope",c:"Trade",v:null,vn:"Varies · T2",e:"📦",d:"T2 Scientific Component, Scientific produce (Route A). Not the Neutrino Module curiosity.",src:"Trade Terminals (Scientific systems)",craft:[],refine:[],use:["Opposite-route premium"]},
+{id:"trm_instab",n:"Instability Injector",c:"Trade",v:null,vn:"Varies · T3",e:"📦",d:"T3 Scientific Component, Scientific produce (Route A).",src:"Trade Terminals (Scientific systems)",craft:[],refine:[],use:["Opposite-route premium"]},
+{id:"trm_organic",n:"Organic Piping",c:"Trade",v:null,vn:"Varies · T4",e:"📦",d:"T4 Scientific Component, Scientific produce (Route A).",src:"Trade Terminals (Scientific systems)",craft:[],refine:[],use:["Opposite-route premium"]},
+{id:"trm_neural",n:"Neural Duct",c:"Trade",v:null,vn:"Varies · T5",e:"📦",d:"T5 Scientific Component, Scientific produce (Route A).",src:"Trade Terminals (Scientific systems)",craft:[],refine:[],use:["Opposite-route premium"]},
+{id:"trm_dirt",n:"Dirt",c:"Trade",v:null,vn:"Varies · T1",e:"⚙️",d:"T1 Tradable Mineral, Mining produce (Route B). Humble, honest, profitable in bulk.",src:"Trade Terminals (Mining systems)",craft:[],refine:[],use:["Opposite-route premium"]},
+{id:"trm_grease",n:"Unrefined Pyrite Grease",c:"Trade",v:null,vn:"Varies · T2",e:"⚙️",d:"T2 Tradable Mineral, Mining produce (Route B).",src:"Trade Terminals (Mining systems)",craft:[],refine:[],use:["Opposite-route premium"]},
+{id:"trm_bromide",n:"Bromide Salt",c:"Trade",v:null,vn:"Varies · T3",e:"⚙️",d:"T3 Tradable Mineral, Mining produce (Route B).",src:"Trade Terminals (Mining systems)",craft:[],refine:[],use:["Opposite-route premium"]},
+{id:"trm_zirc",n:"Polychromatic Zirconium",c:"Trade",v:null,vn:"Varies · T4",e:"⚙️",d:"T4 Tradable Mineral, Mining produce (Route B).",src:"Trade Terminals (Mining systems)",craft:[],refine:[],use:["Opposite-route premium"]},
+{id:"trm_arc",n:"Re-latticed Arc Crystal",c:"Trade",v:null,vn:"Varies · T5",e:"⚙️",d:"T5 Tradable Mineral, Mining produce (Route B).",src:"Trade Terminals (Mining systems)",craft:[],refine:[],use:["Opposite-route premium"]},
+{id:"trm_cog",n:"Enormous Metal Cog",c:"Trade",v:null,vn:"Varies · T1",e:"⚙️",d:"T1 Industrial Component, Manufacturing produce (Route B).",src:"Trade Terminals (Manufacturing systems)",craft:[],refine:[],use:["Opposite-route premium"]},
+{id:"trm_piston",n:"Non-Stick Piston",c:"Trade",v:null,vn:"Varies · T2",e:"⚙️",d:"T2 Industrial Component, Manufacturing produce (Route B).",src:"Trade Terminals (Manufacturing systems)",craft:[],refine:[],use:["Opposite-route premium"]},
+{id:"trm_decoupler",n:"Six-Pronged Mesh Decoupler",c:"Trade",v:null,vn:"Varies · T3",e:"⚙️",d:"T3 Industrial Component, Manufacturing produce (Route B).",src:"Trade Terminals (Manufacturing systems)",craft:[],refine:[],use:["Opposite-route premium"]},
+{id:"trm_crank",n:"Holographic Crankshaft",c:"Trade",v:null,vn:"Varies · T4",e:"⚙️",d:"T4 Industrial Component, Manufacturing produce (Route B).",src:"Trade Terminals (Manufacturing systems)",craft:[],refine:[],use:["Opposite-route premium"]},
+{id:"trm_compress",n:"High Capacity Vector Compressor",c:"Trade",v:null,vn:"Varies · T5",e:"⚙️",d:"T5 Industrial Component, Manufacturing produce (Route B).",src:"Trade Terminals (Manufacturing systems)",craft:[],refine:[],use:["Opposite-route premium"]},
+{id:"trm_circuit",n:"Decommissioned Circuit Board",c:"Trade",v:null,vn:"Varies · T1",e:"⚙️",d:"T1 Technology Part, Technology produce (Route B). Not the crafted Circuit Board.",src:"Trade Terminals (Technology systems)",craft:[],refine:[],use:["Opposite-route premium"]},
+{id:"trm_welding",n:"Welding Soap",c:"Trade",v:null,vn:"Varies · T2",e:"⚙️",d:"T2 Technology Part, Technology produce (Route B).",src:"Trade Terminals (Technology systems)",craft:[],refine:[],use:["Opposite-route premium"]},
+{id:"trm_ioncap",n:"Ion Capacitor",c:"Trade",v:null,vn:"Varies · T3",e:"⚙️",d:"T3 Technology Part, Technology produce (Route B).",src:"Trade Terminals (Technology systems)",craft:[],refine:[],use:["Opposite-route premium"]},
+{id:"trm_position",n:"Autonomous Positioning Unit",c:"Trade",v:null,vn:"Varies · T4",e:"⚙️",d:"T4 Technology Part, Technology produce (Route B).",src:"Trade Terminals (Technology systems)",craft:[],refine:[],use:["Opposite-route premium"]},
+{id:"trm_quantum",n:"Quantum Accelerator",c:"Trade",v:null,vn:"Varies · T5",e:"⚙️",d:"T5 Technology Part, Technology produce (Route B). Not the crafted Quantum Processor.",src:"Trade Terminals (Technology systems)",craft:[],refine:[],use:["Opposite-route premium"]},
+{id:"trm_spark",n:"Spark Canister",c:"Trade",v:null,vn:"Varies · T1",e:"⚙️",d:"T1 Tradable Energy, Power Generation produce (Route B).",src:"Trade Terminals (Power Generation systems)",craft:[],refine:[],use:["Opposite-route premium"]},
+{id:"trm_battery",n:"Industrial-Grade Battery",c:"Trade",v:null,vn:"Varies · T2",e:"⚙️",d:"T2 Tradable Energy, Power Generation produce (Route B).",src:"Trade Terminals (Power Generation systems)",craft:[],refine:[],use:["Opposite-route premium"]},
+{id:"trm_ohmic",n:"Ohmic Gel",c:"Trade",v:null,vn:"Varies · T3",e:"⚙️",d:"T3 Tradable Energy, Power Generation produce (Route B).",src:"Trade Terminals (Power Generation systems)",craft:[],refine:[],use:["Opposite-route premium"]},
+{id:"trm_powerfluid",n:"Experimental Power Fluid",c:"Trade",v:null,vn:"Varies · T4",e:"⚙️",d:"T4 Tradable Energy, Power Generation produce (Route B).",src:"Trade Terminals (Power Generation systems)",craft:[],refine:[],use:["Opposite-route premium"]},
+{id:"trm_fusion",n:"Fusion Core",c:"Trade",v:null,vn:"Varies · T5",e:"⚙️",d:"T5 Tradable Energy, Power Generation produce (Route B). Not the crafted Warp Hypercore.",src:"Trade Terminals (Power Generation systems)",craft:[],refine:[],use:["Opposite-route premium"]},
+// ==== SECRETS & HIDDEN MECHANICS (v11) — community wisdom; patches may dull these ====
+{id:"sx_route",n:"The 18-minute system sweep",c:"Secrets",v:0,e:"🗺️",d:"No official consensus — but the optimal order plots itself: 1) warp-in freighter battle, 2) station sweep, 3) derelict pulse, 4) trading-post camp, 5) settlement cabinets, 6) planets (slowest, last), 7) arena champion to close. RNG-gated checks ride fresh autosaves; planets can't be rushed anyway.",src:"Plotted from the Survey Log routine",craft:[],refine:[],use:["The Survey Log follows this order"]},
+{id:"sx_tradenums",n:"Trade numbers that matter",c:"Secrets",v:0,e:"💹",d:"Buy modifiers bottom at −30% (target −20% or better); sell modifiers top at +80% (target +70% or better). Strong/T3 economies stock all five tiers in bulk. Route A goods sell into Route B systems and vice versa — that cross-route premium is the whole game.",src:"Galaxy map modifiers + terminal arrows",craft:[],refine:[],use:["Every trade run"]},
+{id:"sx_chlorine",n:"Chlorine expansion",c:"Secrets",v:0,e:"🧪",d:"Refine 2 Salt + 1 Oxygen to multiply Chlorine far beyond inputs — the classic expander. Chain it: Salt is cheap, Oxygen is everywhere, Chlorine sells and feeds Acid crafting.",src:"Refiner",craft:[],refine:[{i:"2x Salt + 1x Oxygen",o:"6x Chlorine"}],use:["Acid, sell loops"]},
+{id:"sx_cobalt",n:"Cobalt doubling",c:"Secrets",v:0,e:"🔷",d:"Refine 2 Cobalt into 1 Ionised Cobalt and sell the ionised form for roughly double. Buy Cobalt cheap at terminals, refine, sell — the traveller's first honest arbitrage.",src:"Refiner",craft:[],refine:[{i:"2x Cobalt",o:"1x Ionised Cobalt"}]},
+{id:"sx_chromatic",n:"Chromatic duplication",c:"Secrets",v:0,e:"🌈",d:"Chromatic Metal + Oxygen refines into MORE Chromatic Metal — the loop funds every starship repair you'll ever do. Stellar metals (Copper→Indium) are just the seed.",src:"Refiner",craft:[],refine:[{i:"1x Chromatic + 1x Oxygen",o:"2x Chromatic"}]},
+{id:"sx_nanite",n:"Nanite farming",c:"Secrets",v:0,e:"✨",d:"Fast lanes: Runaway Mould refines straight to Nanites; Hadal Cores and Larval Cores crack into Nanites + metals; frigate expeditions drip-feed upgrades. Never buy tech with units if nanites can pay.",src:"Refiner, derelicts, expeditions",craft:[],refine:[{i:"Runaway Mould / Hadal / Larval",o:"Nanites"}]},
+{id:"sx_stasis",n:"Stasis Device economics",c:"Secrets",v:0,e:"👁️",d:"~15.6M per unit, but the chain is the farm: parallel gas harvesters (Sulphurine/Nitrogen/Radon), plant domes for Poly Fibre + Heat Capacitor lines, and refine intermediates while you play. Build the pipeline once, harvest forever.",src:"Full crafting chain",craft:[{n:"Cryo-Pump",q:"1"},{n:"Superconductor",q:"1"},{n:"Iridesite",q:"1"}],refine:[]},
+{id:"sx_firstwave",n:"First-wave mechanics",c:"Secrets",v:0,e:"🛸",d:"Ships present the moment you load (station or trading post) are a fixed wave — reloading the autosave rerolls it. Some systems deal exotics at the station, others only at the post. Log which.",src:"Stations + trading posts",craft:[],refine:[]},
+{id:"sx_wealth",n:"Wealth odds",c:"Secrets",v:0,e:"💎",d:"Wealthy/T3/Booming systems roll S-class and exotics far more often (≈2% S-class at the top). Economy Scanner on the galaxy map shows strength before you warp — scout before you camp.",src:"Galaxy map + wealthy systems",craft:[],refine:[]},
+{id:"sx_tool",n:"S-class tool loop",c:"Secrets",v:0,e:"🔫",d:"Station cabinet for a baseline model, then straight-line flights checking every minor-settlement cabinet, reloading the autosave to reroll class. The model is fixed per cabinet; the class is the dice.",src:"Settlements + reloads",craft:[],refine:[]},
+{id:"sx_freighter",n:"Capital S-farm timing",c:"Secrets",v:0,e:"🚨",d:"The rescue battle recurs roughly every 3 hours of play / 5 warps. ALWAYS inspect before accepting — declining costs nothing but the fight. Wealthy systems bias the class upward.",src:"Warp rescues",craft:[],refine:[]},
+{id:"sx_derelict",n:"Derelict priorities",c:"Secrets",v:0,e:"👻",d:"One Anomaly Detector is consumed per pulse, so make each count: full sweep (crew manifest, loot rooms) and never skip the end terminal — 3–5 modules including corvette parts is the real payout.",src:"Derelict freighters",craft:[],refine:[]},
+{id:"sx_interceptor",n:"Interceptor hunt",c:"Secrets",v:0,e:"👾",d:"Dissonant system → land on the dissonant planet → destroy Corrupted Sentinels until an Echo Locator drops → follow it to a Harmonic Camp → plant a save beacon → check the crashed ship's class → reload to reroll. Repair bill is Radiant Shards plus standard parts.",src:"Dissonant systems",craft:[],refine:[]},
+{id:"sx_living",n:"Living ship acquisition",c:"Secrets",v:0,e:"🥚",d:"Buy the Void Egg for 3,200 Quicksilver, pulse in space to hatch the Starbirth quest: ~5 stages, each with roughly a 24h real-time wait and planetary coordinates. Play naturally or wait it out — the egg is patient. Repeatable for a living fleet.",src:"Void Egg → Starbirth",craft:[],refine:[]},
+{id:"sx_exotic",n:"Exotic variants to watch for",c:"Secrets",v:0,e:"🛸",d:"Squid, guppy (big tail), royal (gold trim), tri-wing. Exotics max out at modest slots but elite bonuses — hunt the silhouette first, the class second. Royal gold in a wealthy T3 is the dream screenshot.",src:"Wealthy stations + posts",craft:[],refine:[]},
+{id:"sx_solar",n:"Solar sail ships",c:"Secrets",v:0,e:"⛵",d:"Sail ships fold their panels in flight and favor Outlaw and wealthy systems. Same first-wave and reload rules as everything else — the sails just make the stakeout prettier.",src:"Outlaw + wealthy systems",craft:[],refine:[]},
+{id:"sx_portal",n:"Portal best practices",c:"Secrets",v:0,e:"🌀",d:"16 glyphs total: ask Travellers (they mark graves) or walk the Artemis path. Addresses are 12 glyphs (1st = planet index). Portal interference blocks warping and freighter summoning — always return through the portal you came from, and expect storms plus attention on arrival.",src:"Portals + Traveller graves",craft:[],refine:[]},
+{id:"sx_base_limits",n:"Base limits & quirks",c:"Secrets",v:0,e:"🏠",d:"Each base caps around ~3,000 components (less on console) with a planet-wide object budget on top; terrain edits are capped too, so flatten before you decorate. Keep base computers well apart, never build tight against portals or mission-critical POIs, and upload the base or it only exists for you.",src:"Base computer menu",craft:[],refine:[]},
+{id:"sx_base_power",n:"Base power",c:"Secrets",v:0,e:"🔋",d:"Solar + batteries for steady nowhere-power; electromagnetic hotspots (found with the survey device) for heavy industry. Silos and storage containers network per base — containers share inventory across all your bases.",src:"Build menu: power",craft:[],refine:[]},
+{id:"sx_freighter_base",n:"Freighter vs orbital bases",c:"Secrets",v:0,e:"🚢",d:"CORRECTION (Cosmos 7.0): open-space bases EXIST now — a deep-space base computer claims any empty volume, or build on rock platforms. The freighter remains the MOBILE base: follows you, farm domes, refiners, triple-refiner tech. Rule of thumb: freighter = farm that travels; orbital = home with a view.",src:"Freighter build mode / deep-space computer",craft:[],refine:[]},
+{id:"sx_terrain",n:"Terrain discipline",c:"Secrets",v:0,e:"⛏️",d:"Flatten with the Terrain Manipulator BEFORE placing floors; buried-tech edits near builds can resurface after uploads. When a base misbehaves, restore-point reloads fix most hauntings.",src:"Terrain Manipulator",craft:[],refine:[]},
+{id:"sx_farm",n:"Farming practices",c:"Secrets",v:0,e:"🌾",d:"Biodomes and trays grow Stasis-chain plants unattended; gas harvesters (Atmosphere Harvester) on Sulphurine/Nitrogen/Radon worlds feed Superconductor lines; Nipnip and Faecium loops fund Lubricant and bait. Harvest on a circuit while refiner queues run.",src:"Farms + harvesters",craft:[],refine:[]},
+{id:"sx_cooking_money",n:"Cooking money + buffs",c:"Secrets",v:0,e:"🍳",d:"Cronus pays Nanites for new dishes, and the Nutrient Ingestor turns food into buffs — pilots report fauna-scan bonuses in the thousands of percent from top-tier plates. Cook one of everything, then cook the winners in bulk.",src:"Nutrient Processor + Ingestor",craft:[],refine:[],cook:"Taste everything once"},
+{id:"sx_breeding",n:"Breeding quick-ref",c:"Secrets",v:0,e:"🧬",d:"Companion eggs land ~24h after adoption/hatch. Sequencer: Growth = size/agility-health tradeoff, Splitter = anatomy (always Unstable — overdose for wild swings), Dye = colour, Neural = personality. Arena battles mutate; each mutation level buys one Combat/Health/Agility edit; at max potential, edits reroll the move pool instead.",src:"Egg Sequencer + Holo-Arena",craft:[],refine:[]},
+{id:"sx_savescum",n:"Save discipline (the benign exploits)",c:"Secrets",v:0,e:"💾",d:"PATCH DISCLAIMER: single-player rerolls — first waves, cabinet classes, interceptor classes, freighter offers — are save/reload mechanics the game tolerates, but balancing passes dull them without notice. Multiplayer duplication glitches risk saves and other players' time: leave those alone.",src:"Autosave + manual saves",craft:[],refine:[]},
+{id:"sx_guilds",n:"Guild envoy tiers",c:"Secrets",v:0,e:"🎖️",d:"Handing in Mercenary/Merchant/Explorer missions raises guild standing toward Envoy tiers — discounts, gifts and free upgrades follow. New system? Check all three guild envoys on the station before you shop.",src:"Station guild envoys",craft:[],refine:[]},
+{id:"sx_autophage",n:"Autophage & purple systems",c:"Secrets",v:0,e:"🟣",d:"Purple-star systems host the Autophage: staff parts, Atlantid tech and a language to learn word by word. Worth a dedicated trip once the survey routine feels routine.",src:"Purple systems",craft:[],refine:[]},
+{id:"sx_backup",n:"Save hygiene",c:"Secrets",v:0,e:"💿",d:"Autosaves on exit-ship; manual saves via beacons/save points. Before expeditions, big purchases or risky updates: force a manual save, let cross-save upload finish. Restore points have saved more Travellers than hazard shielding.",src:"Save points + options menu",craft:[],refine:[]},
+// ==== COSMOS 7.0 REFRESH (v12) ====
+{id:"cosmos",n:"Cosmos Update (7.0)",c:"Unique",v:0,e:"🌌",d:"September 2026: deep-space salvage loop, ownable stations, free-floating orbital bases, alliances, star-system map, EVA for every ship, reachable stars, and the 10-year Our Journey expedition. The entries below unpack it.",src:"Update 7.0 (Cosmos)",craft:[],refine:[]},
+{id:"ds_outpost",n:"Deep-Space Outpost",c:"Curiosities",v:0,e:"🛰️",d:"Inhabited remote stations in deep space. The quartermaster trades maps and salvaged materials; the salvage & delivery terminal posts salvage and material-recovery contracts that pay standing + rewards.",src:"Deep-space POIs (system map)",craft:[],refine:[],use:["Contracts, processing, trade"]},
+{id:"orbital_base",n:"Orbital Construction (deep-space base)",c:"Crafted",v:0,e:"🏗️",d:"A deep-space base computer claims any empty volume of space — or build on natural rock platforms. New corridor parts, full decor via the Anomaly research terminal. Your freighter is no longer the only off-world home.",src:"Deploy base computer in space",craft:[],refine:[],use:["Orbital habitat / celestial city"]},
+{id:"hulk",n:"Derelict Hulk",c:"Curiosities",v:0,e:"💀",d:"Colossal drifting shipwrecks — rusted maze chambers, spacewalk only. Pluck tech and cargo, but every strip disturbs structural integrity: hulks MELT DOWN and explode. Prioritise valuables, escape early.",src:"Deep space (system map POIs)",craft:[],refine:[],use:["Shipbreaking loot"]},
+{id:"shipbreaking",n:"Shipbreaking loop",c:"Crafted",v:0,e:"⚙️",d:"Strip POIs and hulks (comet dust, gelatinous fibres, contaminated metal) → launch finds at the Tractor Beam with the Gravitino Coil → process at a deep-space outpost → sell on the Galactic Trade Network or spend on station construction.",src:"Hulks, belts, debris fields",craft:[],refine:[{i:"Raw salvage @ outpost",o:"Lucrative refined goods"}],use:["Units or station parts"]},
+{id:"director",n:"Station Directorship",c:"Unique",v:0,e:"👑",d:"Prove yourself to local authorities to direct a station: reshape the lobby, add ancillary rooms, decorate the exterior (colossal modules via Anomaly unlocks + deep-space anomaly drops). Your taste, imposed on travellers.",src:"Earn directorship per station",craft:[],refine:[],use:["Custom station + alliance seat"]},
+{id:"alliance",n:"Galactic Alliances",c:"Unique",v:0,e:"🚩",d:"Join up to three alliances at their stations (fast teleporter access); directors can found one with custom name + banner. Leaderboards at the station core rank the most populous, active, expansive collectives.",src:"Alliance stations / found as director",craft:[],refine:[]},
+{id:"tractor",n:"Tractor Beam (corvette)",c:"Crafted",v:0,e:"🧲",d:"Corvette Workshop utility part: sucks in and refines physical salvage and minerals; launch finds at it with the Coil for Corvette-hold storage (oversize objects auto-processed). Automated venting ejects cargo in seconds — not recommended for sentient objects.",src:"Corvette Workshop",craft:[],refine:[],use:["Deep-space salvage collection"]},
+{id:"coil",n:"Gravitino Coil",c:"Unique",v:0,e:"🌀",d:"The gravity manipulator, Cosmos-upgraded: improved handling and crosshairs, equippable even in stations. Launches salvage at the Tractor Beam, clears viral mass in infested outposts.",src:"Utility mount",craft:[],refine:[],use:["Salvage handling, biohazard clearing"]},
+{id:"sysmap",n:"Star System Map",c:"Unique",v:0,e:"🗺️",d:"Quick-Menu system chart: bodies, station, deep-space POIs, unidentified signals (appear after your first Anomaly visit). Mark anything for starship nav assist. Tutorial mission: Signals.",src:"Quick Menu (post-Anomaly)",craft:[],refine:[]},
+{id:"eva",n:"Spacewalking (all ships)",c:"Unique",v:0,e:"🧑‍🚀",d:"Any pilot can eject via the Quick Menu anywhere in space now — true six-degrees-of-freedom flight including roll. Hulks REQUIRE it; everything else is better with it.",src:"Quick Menu → eject",craft:[],refine:[]},
+{id:"sunrun",n:"Reachable stars",c:"Curiosities",v:0,e:"☀️",d:"Stars are now physical destinations for long-haul flights: spectacular, bright, ultimately lethal. Go at your own risk — and log the attempt.",src:"Fly at the sun",craft:[],refine:[]},
+{id:"icefields",n:"Ice Fields",c:"Elements",v:0,e:"❄️",d:"Glittering stellar ice mines in deep space, yielding valuable resources — plus the miners, traders and pirates such riches attract.",src:"Deep-space POIs",craft:[],refine:[]},
+{id:"infested",n:"Infested Outposts",c:"Curiosities",v:0,e:"🦠",d:"Goop-choked outposts: clear viral mass with Coil skill to extract pathogen sacs, gelatinous fibres and horrors. Biohazard cleanup contracts pay the brave.",src:"Infested deep-space POIs",craft:[],refine:[],cook:"Clear goop → rare samples"},
+{id:"exp_journey",n:"Our Journey Continues (expedition)",c:"Unique",v:0,e:"🎂",d:"10-year anniversary expedition through NMS history, with Sean Murray dev commentary per milestone (filed in Catalogue Knowledge). Rewards: framed update art, diplodocus companion (resurrected pre-release beast), vintage Sentinel Interceptor, Starbound v0.27 multi-tool, golden Rasamama S36, cockpit astronaut figurine.",src:"Expedition: Our Journey Continues",craft:[],refine:[]},
+{id:"living_patrol",n:"Living Ship patrols",c:"Unique",v:0,e:"🐋",d:"During Starbirth the living ship now patrols infested outposts and can be actively sought there. And the Dream Aerial is now reusable and craftable — burn one whenever you want to locate individual living frigates. (Fixed: a finished Starbirth no longer blocks the egg from attracting further living ships.)",src:"Infested outposts / crafted Aerial",craft:[],refine:[],use:["Find living ships & frigates"]},
+// ==== FORSAKEN 7.10–7.14 + BREACH/REMNANT CATCH-UP (v13) ====
+{id:"forsaken",n:"Forsaken Update (7.10–7.14)",c:"Unique",v:0,e:"🥀",d:"The spacetrucker patch: forsaken traders, haunting mementos, courier contracts, seamless warping, space holo-arenas, sinister corvette parts — plus iOS release, minimal HUD and the radial weapon wheel. Patched to 7.14 with community-feedback fixes.",src:"Update 7.10 Forsaken (+patches to 7.14)",craft:[],refine:[]},
+{id:"forsaken_trader",n:"Forsaken Traders",c:"Curiosities",v:0,e:"🧙",d:"Enigmatic collectors at the edges of deep-space outposts. Summon and offer haunting mementos for sinister corvette modules — or preserved grubs for the Larva Cannon.",src:"Deep-space outposts (summon)",craft:[],refine:[],use:["Mementos → modules, grubs → cannon"]},
+{id:"memento",n:"Haunting Mementos",c:"Curiosities",v:0,e:"👻",d:"Bizarre biological samples surfacing in the spookiest places: infested outposts, deep-space hulks, derelict freighters, and among the bones at digsites. Harvest carefully — prolonged exposure draws hostile boundary horrors.",src:"Infested/hulk/derelict/digsite",craft:[],refine:[],use:["Trade to forsaken traders"]},
+{id:"sinister_mods",n:"Sinister Corvette Modules",c:"Crafted",v:0,e:"🦷",d:"Biomechanical nightmare kit: Vantage (ultra-wide), Hornet, Viper and Mantis cockpits (three variants each for the latter three), cruiser-style Legion habs, and sinister hull structures.",src:"Forsaken traders (mementos)",craft:[],refine:[],use:["Horror builds or sinister accents"]},
+{id:"larva_cannon",n:"Larva Cannon",c:"Unique",v:0,e:"🐛",d:"Multi-tool grown from a larval exoskeleton of unknown provenance. Surrender preserved grubs to a forsaken trader to claim it.",src:"Forsaken traders (grubs)",craft:[],refine:[]},
+{id:"larva_helm",n:"Larva Tank Helmet (Mind Harvester)",c:"Unique",v:0,e:"🪖",d:"A parasitic larva for a cranium, wriggling in its tank. Earned by dedicating yourself to the memento harvest — title of Mind Harvester included.",src:"Forsaken dedication rewards",craft:[],refine:[]},
+{id:"courier",n:"Space Courier Contracts",c:"Trade",v:0,e:"📦",d:"Long-haul space trucking: corvette + Gravitino Coil package deliveries from deep-space outposts. Clients pay generously for safe interplanetary delivery — the spacetrucker fantasy, made official.",src:"Deep-space outpost contracts",craft:[],refine:[],use:["Generous unit payouts"]},
+{id:"seamless",n:"Seamless Warping",c:"Unique",v:0,e:"🌠",d:"Nearby stars now appear as bright, directly targetable destinations in deep space — warp without opening the Galaxy Map. Interstellar mission targets get a marker on their star.",src:"Deep space (look up)",craft:[],refine:[]},
+{id:"space_arena",n:"Space Holo-Arenas",c:"Unique",v:0,e:"🏟️",d:"A Holo-Arena challenger now waits at deep-space outposts with a unique battle configuration — plus an XP rebalance for mismatched-rank teams. Bring your champions.",src:"Deep-space outposts",craft:[],refine:[],use:["Outpost championships"]},
+{id:"hud_wheel",n:"Minimal HUD + Weapon Wheel",c:"Unique",v:0,e:"🎛️",d:"Minimal HUD mode strips compass, hazard bars and notifications for clean immersion; the radial weapon wheel ends multi-tool mode-cycling forever. (Forsaken also shipped the full game on iOS, touch UI rebuilt.)",src:"Settings / multi-tool",craft:[],refine:[]},
+{id:"pin_mats",n:"Catalogue pinning + station parts",c:"Unique",v:0,e:"📌",d:"Cosmos deep-space materials can now be pinned in the catalogue for locating guidance, and exterior station decoration parts joined the catalogue too. Your Codex approves.",src:"Catalogue (Forsaken+)",craft:[],refine:[]},
+{id:"trade_pad",n:"Trading-post corvette pad + free Oxygen",c:"Unique",v:0,e:"🅿️",d:"Planetary trading posts gained a corvette landing pad, and the Oxygen Harvester can now be built anywhere on a surface — not just inside bases.",src:"Forsaken QoL",craft:[],refine:[]},
+{id:"breach",n:"Breach Expedition (20)",c:"Unique",v:0,e:"💥",d:"Expedition Twenty stocked the parts bins: a wave of new corvette modules salvageable from deep-space wrecks and planetary scrapheaps.",src:"Expedition 20: Breach",craft:[],refine:[],use:["Corvette module haul"]},
+{id:"remnant",n:"Remnant Update (6.2)",c:"Unique",v:0,e:"🚜",d:"The Colossus exocraft, rebuilt: design, save and name custom configurations for the big hauler — plus a gravity-gun multi-tool upgrade that lifts waste, cargo… even Sentinels.",src:"Update 6.2 Remnant",craft:[],refine:[]},
 ];
-const CATS = ["All","Favourites","Elements","Gases","Crafted","Trade","Curiosities","Cooking","Unique"];
+const CATS = ["All","Favourites","Elements","Gases","Crafted","Trade","Curiosities","Cooking","Secrets","Unique"];
 function catMatch(it,cat){
   if(cat==="All")return true;
   if(cat==="Favourites")return FAV.has(it.id);
@@ -490,7 +599,8 @@ function renderChips(){
     chips.appendChild(b);
   });
 }
-function fmt(v){return v>=1000000?(v/1000000).toFixed(1)+"M u":v>=1000?(v/1000).toFixed(1)+"k u":v+" u";}
+function fmt(v){if(v==null)return "Varies";return v>=1000000?(v/1000000).toFixed(1)+"M u":v>=1000?(v/1000).toFixed(1)+"k u":v+" u";}
+function val(it){return it.vn||fmt(it.v);}
 function render(){
   const term=q.value.trim().toLowerCase();
   let list=DATABASE.filter(it=>catMatch(it,activeCat));
@@ -503,30 +613,32 @@ function render(){
   if(!list.length){grid.innerHTML=`<div class="empty">No relics match.<br><br>Try “carbon”, “stasis” or “egg”.</div>`;return;}
   list.forEach(it=>{
     const d=document.createElement("div");d.className="card";
-    d.innerHTML=`<button class="favbtn">${FAV.has(it.id)?"★":"☆"}</button>${it.img?`<img class="thumb" loading="lazy" src="${it.img}" alt="">`:`<div class="ico">${it.e}</div>`}<div class="cat">${it.c}</div><h3>${it.n}</h3><div class="desc">${it.d}</div><div class="val">◈ ${fmt(it.v)}</div>`;
+    d.innerHTML=`<button class="favbtn">${FAV.has(it.id)?"★":"☆"}</button>${it.img?`<img class="thumb" loading="lazy" src="${it.img}" alt="">`:`<div class="ico">${it.e}</div>`}<div class="cat">${it.c}</div><h3>${it.n}</h3><div class="desc">${it.d}</div><div class="val">◈ ${val(it)}</div>`;
     d.querySelector(".favbtn").onclick=(e)=>{e.stopPropagation();FAV.has(it.id)?FAV.delete(it.id):FAV.add(it.id);saveFav();renderChips();render();};
     d.onclick=()=>openModal(it);
     grid.appendChild(d);
   });
 }
-function sec(title,rows){if(!rows||!rows.length)return "";return `<div class="sec"><h4>${title}</h4><ul>${rows.map(r=>`<li><span>${r[0]}</span><span class="q">${r[1]||""}</span></li>`).join("")}</ul></div>`;}
+function sec(title,rows,link){if(!rows||!rows.length)return "";return `<div class="sec"><h4>${title}</h4><ul>${rows.map(r=>{const t=String(r[0]).replace(/"/g,"&quot;");return `<li${link?` class="linkrow" data-s="${t}"`:""}><span>${r[0]}</span><span class="q">${r[1]||""}</span></li>`}).join("")}</ul></div>`;}
 function openModal(it){
   current=it;
   document.getElementById("mCat").textContent=it.c+" — Codex Entry";
   document.getElementById("mName").innerHTML=(it.img?`<img class="bigthumb" src="${it.img}" alt="">`:"")+it.e+" "+it.n;
   document.getElementById("mDesc").textContent=it.d;
-  document.getElementById("mMeta").innerHTML=`<div class="pill u">◈ ${fmt(it.v)} base</div><div class="pill">⬡ ${it.src||"Unknown provenance"}</div><div class="pill">${FAV.has(it.id)?"★ Favourited":"☆ Not favourited"}</div>`;
+  document.getElementById("mMeta").innerHTML=`<div class="pill u">◈ ${val(it)} base</div><div class="pill">⬡ ${it.src||"Unknown provenance"}</div><div class="pill">${FAV.has(it.id)?"★ Favourited":"☆ Not favourited"}</div>`;
   let h="";
-  h+=sec("Crafting recipe",(it.craft||[]).map(x=>[x.n,"× "+x.q]));
+  h+=sec("Crafting recipe",(it.craft||[]).map(x=>[x.n,"× "+x.q]),true);
   h+=sec("Refiner / Processor",(it.refine||[]).map(r=>[r.i,r.o]));
   if(it.cook)h+=sec("Nutrient Processor",[[it.cook,"🍳"]]);
-  h+=sec("Used in / Combinations",(it.use||[]).map(u=>[u,"→"]));
+  h+=sec("Used in / Combinations",(it.use||[]).map(u=>[u,"→"]),true);
   if(!h)h=`<p class="note">A simple relic — sell it, gift it, or refine it for quiet profit.</p>`;
   document.getElementById("mBody").innerHTML=h+`<p class="note" style="margin-top:12px">Traveller's note: base values shift with system economy (Boom / Wealthy pay more, using Nguồn Economy Scanner). Refiner ratios shown are the most dignified / efficient known.</p>`;
   document.getElementById("favBig").textContent=FAV.has(it.id)?"★ Favourited":"☆ Favourite";
   overlay.classList.add("open");overlay.scrollTop=0;
 }
 document.getElementById("close").onclick=()=>overlay.classList.remove("open");
+function codexSearch(term){const words=String(term||"").toLowerCase().split(/\s+/).filter(Boolean);const hay=it=>(it.n+" "+it.d+" "+it.c+" "+(it.src||"")+" "+(it.cook||"")+" "+(it.use||[]).join(" ")+" "+(it.craft||[]).map(x=>x.n).join(" ")).toLowerCase();for(let n=words.length;n>=1;n--){const q=words.slice(0,n).join(" ");if(DATABASE.some(it=>hay(it).includes(q)))return q;}return term;}
+document.getElementById("mBody").addEventListener("click",e=>{const li=e.target.closest&&e.target.closest("li[data-s]");if(!li)return;const term=li.getAttribute("data-s");if(!term)return;overlay.classList.remove("open");showTab('c');activeCat='All';renderChips();q.value=codexSearch(term);render();window.scrollTo({top:0});});
 overlay.addEventListener("click",e=>{if(e.target===overlay)overlay.classList.remove("open");});
 document.getElementById("favBig").onclick=()=>{if(!current)return;FAV.has(current.id)?FAV.delete(current.id):FAV.add(current.id);saveFav();renderChips();render();openModal(current);};
 q.oninput=render;sortEl.onchange=render;
@@ -534,13 +646,23 @@ renderChips();render();
 
 /* Checklist master v2 — community-backed system routine */
 const CHECKS=[
- {g:"Station sweep (do first)",items:[
+ {g:"Space encounters (warp-in first!)",items:[
+  {k:"sp_freight",t:"Capital freighter battle",s:"Triggers on warp-in — inspect before accepting (S-farm: ~3h/5 warps)"},
+  {k:"sp_derelict",t:"Derelict freighter",s:"Anomaly Detector pulse; full sweep + end terminal (3–5 modules)"},
+  {k:"sp_pirate",t:"Pirates / sentinels",s:"Dissonant system? Sentinel carrier hunt?"}]},
+ {g:"Deep space (Cosmos 7.0)",items:[
+  {k:"ds_map",t:"Star-system map opened",s:"Quick Menu → bodies, station, POIs, signals"},
+  {k:"ds_outpost",t:"Deep-space outpost",s:"Quartermaster + salvage/delivery contracts"},
+  {k:"ds_hulk",t:"Derelict hulk dived",s:"Spacewalk only — loot, watch integrity, escape"},
+  {k:"ds_orbital",t:"Orbital base staked",s:"Base computer in space or rock platform"}]},
+ {g:"Station sweep",items:[
   {k:"st_cab",t:"Station multi-tool cabinet",s:"Note class/slots — the S-class loop starts here"},
   {k:"st_ship",t:"Station ships watched",s:"First-wave exotics; wealthy systems = best S-class odds"},
   {k:"st_mod",t:"Upgrade modules + scrap",s:"Suit/ship/tool tech; check the scrap dealer"},
   {k:"st_arena",t:"Holo-Arena table",s:"League HQ — play a placement bout?"},
   {k:"st_fossil",t:"Fossil collector",s:"Trade surplus bones; browse exhibits"},
-  {k:"st_trade",t:"Economy snapshot",s:"Confirm type / wealth / conflict at terminal"}]},
+  {k:"st_trade",t:"Economy snapshot",s:"Confirm type / wealth / conflict at terminal"},
+  {k:"st_director",t:"Station directorship",s:"Petition / decorate / expand / alliance?"}]},
  {g:"Trading post camp",items:[
   {k:"tp_found",t:"Trading post located",s:"Economy scanner → trading post (quick menu)"},
   {k:"tp_exotic",t:"Exotic / sentinel watch",s:"Reload loop — wealthy ≈ 2% S-class odds"},
@@ -548,11 +670,7 @@ const CHECKS=[
  {g:"Minor settlements (tool hunt)",items:[
   {k:"ms_loop",t:"Settlement cabinet loop",s:"Fly straight lines; check every cabinet"},
   {k:"ms_s",t:"S-class tool found?",s:"Log coords + class/slots in the finds log"}]},
- {g:"Space encounters",items:[
-  {k:"sp_freight",t:"Capital freighter battle",s:"Rescue → inspect (S-farm: every 3h / 5 warps)"},
-  {k:"sp_derelict",t:"Derelict freighter",s:"Anomaly Detector pulse; full sweep + end terminal (3–5 modules)"},
-  {k:"sp_pirate",t:"Pirates / sentinels",s:"Dissonant system? Sentinel carrier hunt?"}]},
- {g:"Planets",items:[
+ {g:"Planets (slowest — last)",items:[
   {k:"planets",t:"Planets charted",s:"Visited + named in Discoveries"},
   {k:"fauna",t:"Fauna 100% bonus",s:"Zoology complete per planet"},
   {k:"flora",t:"Flora & minerals",s:"Botany/geology complete"},
@@ -560,10 +678,40 @@ const CHECKS=[
   {k:"fossil",t:"Fossils / bones",s:"Beds + digsite visited?"},
   {k:"storm",t:"Storm crystals",s:"Extreme weather timing?"},
   {k:"fish",t:"Fishing sampled",s:"Biomes + day/night + storm casts?"}]},
- {g:"Holo-League diary 👑",items:[
+ {g:"Holo-League diary 👑 (close-out)",items:[
   {k:"arena",t:"Arena found",s:"Station / settlement / outpost / Anomaly"},
   {k:"champ",t:"Champion defeated — title in note ▸",s:"System champion down; record the exact title"}]},
 ];
+/* Field Manual v10 — how to complete each entry */
+const MANUAL={
+st_cab:"Station ring: find the multi-tool cabinet by the tech merchants. Note class + slots — this is stop one of every S-class loop.",
+st_ship:"STATION FIRST WAVE: ships present the moment you load are the wave — note every one. Wealthy/Booming = best S + exotic odds. Reload (exit ship, reload autosave) to reroll. Gold-trim squid/royal, big-tail guppy, tri-wings = exotics.",
+st_mod:"Buy suit/ship/weapon tech plus any S-class upgrades in stock. The scrap dealer funds the loop — check them too.",
+st_arena:"Find the holo-table (the Anomaly always has one). Log the venue, play a placement bout with your trainee.",
+st_fossil:"Station fossil collector: dump surplus bones, browse exhibits for missing skeleton parts.",
+st_trade:"Galaxy map first: confirm type/strength + Buy/Sell modifiers. Buy at −20% or better, sell at +70% or better.",
+tp_found:"Fit an Economy Scanner, quick menu → scan for trading post. Land and exit the ship to plant an autosave.",
+tp_exotic:"TRADING-POST CAMP: Economy Scanner → post, land, exit ship (autosave), then wait or reload. Wealthy T3 ≈ 2% S-class. Watch for squid/royal/guppy silhouettes — and Sentinel interceptors on dissonant posts.",
+tp_first:"First wave = ships present on load, at station AND post. Reload to reroll; log which location spawns what — some systems favor one.",
+ms_loop:"TOOL HUNT: station cabinet first for a baseline, then fly straight lines and check every minor-settlement cabinet. Reload the autosave to reroll a promising model. S odds follow wealth.",
+ms_s:"Right model, wrong class? Reload the autosave to reroll the cabinet.",
+sp_freight:"Battle triggers on warp-in — rescue, then INSPECT before accepting. S-farm ≈ every 3h/5 warps. Wealthy systems help. Declining costs nothing but the battle.",
+sp_derelict:"One Anomaly Detector per pulse (consumed on use). Full sweep: crew manifest, loot rooms, END TERMINAL = 3–5 modules incl. corvette parts. That's the prize.",
+sp_pirate:"Dissonant systems: down interceptors for a carrier location. Note conflict level for the log.",
+planets:"Land everywhere, visit + rename in Discoveries. Check water — exotics spawn near it and trading posts.",
+fauna:"Visor-scan every species; feed for ride/tame data. 100% per planet pays the zoology bonus.",
+flora:"Scan all flora + minerals per planet for the botany/geology pages.",
+settle:"Charts from the station cartographer; overseer terminal if you claim one. Note maps bought.",
+fossil:"Fossil beds + digsite building; dig with the Terrain Manipulator. Sell exhibits via the station collector.",
+storm:"Extreme-weather planets only — crystals grow during storms. Bring hazard protection and patience.",
+fish:"Cast in each biome, day and night, plus one storm. Deeper water = bigger fish; crafted lures for rarities.",
+arena:"Tables live at stations, settlements, outposts — and since Forsaken, deep-space outposts with their own challenger config. Log the venue.",
+champ:"Beat the system champion, then write the exact title in this item's own note — that is the diary.",
+ds_map:"Quick Menu → star-system map (needs first Anomaly visit). Mark POIs for nav assist; run the Signals tutorial.",
+ds_outpost:"Dock the outpost: quartermaster trades maps + salvaged materials; sign salvage/delivery AND courier contracts for standing + pay. Forsaken adds a holo-arena challenger here too.",
+ds_hulk:"Eject and spacewalk in (ships can't enter). Grab tech/cargo first, watch integrity warnings, leave BEFORE the meltdown.",
+ds_orbital:"Deploy a deep-space base computer in empty space or on a rock platform; corridor parts link it up. Decor unlocks at the Anomaly terminal.",
+st_director:"Petition local authorities; once director: lobby, rooms, exterior decor, alliance founding. Note which station is YOURS."};
 const EMO={Yellow:"💛",Red:"❤️",Green:"💚",Blue:"💙",Purple:"💜"};
 let DB=[];
 try{DB=JSON.parse(localStorage.getItem("voyager-log")||"[]")}catch(e){DB=[]}
@@ -622,6 +770,9 @@ function LopenSys(id){
       B.appendChild(d);B.appendChild(box);
     });
   });
+  B.innerHTML+=`<button class="mini" id="LmanualBtn" style="width:100%;margin-bottom:8px">📖 Field Manual — how to complete each entry</button><div id="Lmanual" style="display:none"></div>`;
+  const MB=$("Lmanual");CHECKS.forEach(g=>{MB.innerHTML+=`<h4>${g.g}</h4>`;g.items.forEach(i=>{MB.innerHTML+=`<div class="chk"><div><b>${i.t}</b><span>${MANUAL[i.k]||i.s}</span></div></div>`})});
+  $("LmanualBtn").onclick=()=>{const m=$("Lmanual");m.style.display=m.style.display==="none"?"":"none"};
   B.innerHTML+=`<h4>Planets</h4><div class="sub" id="Lplanets"></div><button class="mini" id="LaddP">+ planet</button>
   <h4>Derelict / ships / tools log</h4><div class="sub" id="Lfinds"></div><button class="mini" id="LaddF">+ log entry</button>`;
   const renderP=()=>{const P=$("Lplanets");P.innerHTML="";(Lcur.planets||[]).forEach((p,ix)=>{
@@ -681,9 +832,9 @@ document.getElementById('Fadd').onclick=()=>{
 document.getElementById('Fq').oninput=Frender;
 document.getElementById('Fexport').onclick=()=>{const b=new Blob([JSON.stringify(FDB,null,1)],{type:"application/json"});const a=document.createElement("a");a.href=URL.createObjectURL(b);a.download="voyager-fish.json";a.click()};
 /* ---- Tabs ---- */
-const tabC=document.getElementById('tabCodex'),tabL=document.getElementById('tabLog'),tabF=document.getElementById('tabFish');
-function showTab(w){document.getElementById('viewCodex').style.display=w==='c'?'':'none';document.getElementById('viewLog').style.display=w==='l'?'':'none';document.getElementById('viewFish').style.display=w==='f'?'':'none';tabC.classList.toggle('on',w==='c');tabL.classList.toggle('on',w==='l');tabF.classList.toggle('on',w==='f');if(w==='l'){LrenderChips();Lrender();}if(w==='f'){Frender();}}
-tabC.onclick=()=>showTab('c');tabL.onclick=()=>showTab('l');tabF.onclick=()=>showTab('f');
+const tabC=document.getElementById('tabCodex'),tabL=document.getElementById('tabLog'),tabF=document.getElementById('tabFish'),tabS=document.getElementById('tabSecrets');
+function showTab(w){document.getElementById('viewCodex').style.display=(w==='c'||w==='s')?'':'none';document.getElementById('viewLog').style.display=w==='l'?'':'none';document.getElementById('viewFish').style.display=w==='f'?'':'none';tabC.classList.toggle('on',w==='c');tabL.classList.toggle('on',w==='l');tabF.classList.toggle('on',w==='f');tabS.classList.toggle('on',w==='s');if(w==='l'){LrenderChips();Lrender();}if(w==='f'){Frender();}if(w==='s'){activeCat='Secrets';q.value='';renderChips();render();}}
+tabC.onclick=()=>{activeCat='All';renderChips();render();showTab('c')};tabL.onclick=()=>showTab('l');tabF.onclick=()=>showTab('f');tabS.onclick=()=>showTab('s');
 </script>
 </body>
 </html>
