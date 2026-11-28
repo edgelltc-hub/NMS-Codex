@@ -176,6 +176,15 @@ kbd{background:#000;border:1px solid #333;border-radius:6px;padding:1px 6px;font
 .ddbtn{background:#0a1320;border:1px solid var(--line);color:var(--text);border-radius:12px;padding:11px 30px 11px 12px;font-size:13px;cursor:pointer;text-align:left;position:relative;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .ddbtn::after{content:"▾";position:absolute;right:10px;top:50%;transform:translateY(-50%);opacity:.7}
 #viewFish .ddbtn{background:#060b12;border-color:rgba(255,255,255,.12);border-radius:9px;padding:10px 30px 10px 10px;width:100%}
+#viewHangar .frow{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:8px}
+#viewHangar input,#viewHangar select{background:#060b12;border:1px solid rgba(255,255,255,.12);color:var(--text);border-radius:9px;padding:10px;font-size:13px;width:100%}
+#viewHangar .fishrow{display:flex;gap:8px;align-items:flex-start;background:linear-gradient(180deg,#122032,#0a1320);border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:11px;margin-bottom:8px}
+#viewHangar .fishrow b{font-size:14px}
+#viewHangar .fishrow span{display:block;font-size:12px;color:var(--muted);margin-top:2px}
+#viewHangar .ftag{color:var(--teal)}
+#viewHangar .fnote{color:#c2cddc;font-style:italic}
+#viewHangar .fbar{display:flex;gap:8px;margin-bottom:10px}
+#viewHangar .mini.on{border-color:var(--teal);color:var(--teal)}
 #logDash .ddbtn{background:#060b12;border-color:rgba(255,255,255,.12);border-radius:9px;padding:9px 30px 9px 10px;width:100%}
 #ddOv{z-index:70}
 #ddOv li.sel{background:rgba(110,242,225,.08)}
@@ -192,7 +201,7 @@ kbd{background:#000;border:1px solid #333;border-radius:6px;padding:1px 6px;font
 
 <div class="wrap">
 <div class="hero"><h2>A traveller's catalogue, bound in starlight.</h2>
-<p><b>Codex v17.02 · expansions + color links · Game: Holiday 7.15.1</b> · Refreshed Nov 2026. Descriptions, base values in <b>Units (u)</b>, crafting, <b>Refiner</b> &amp; <b>Nutrient Processor</b> combinations. Tap any entry for full provenance. ★ = add to your personal expedition favourites (saved on this device). Values are base game values — wealthy systems pay more.</p></div>
+<p><b>Codex v17.03 · expansions + color links · Game: Holiday 7.15.1</b> · Refreshed Nov 2026. Descriptions, base values in <b>Units (u)</b>, crafting, <b>Refiner</b> &amp; <b>Nutrient Processor</b> combinations. Tap any entry for full provenance. ★ = add to your personal expedition favourites (saved on this device). Values are base game values — wealthy systems pay more.</p></div>
 <div class="grid" id="grid"></div>
 <p class="note" style="display:none">To extend: open this file and edit the <kbd>DATABASE</kbd> array at the top of the script — each entry is self-documenting. No build step, works fully offline. Data compiled for the Holiday 7.15 era; treat values as guide, not scripture.</p>
 </div>
@@ -238,7 +247,10 @@ kbd{background:#000;border:1px solid #333;border-radius:6px;padding:1px 6px;font
 </div></section>
 <section id="viewHangar" style="display:none"><div class="wrap">
 <div style="display:flex;gap:8px;align-items:center;margin:6px 0 10px"><input id="Hq2" type="search" placeholder="Search hangar…" autocomplete="off" style="flex:1;background:#0a1320;border:1px solid rgba(214,178,94,.25);color:var(--text);padding:11px 13px;border-radius:11px;font-size:14px"><span class="pill" id="Hstats" style="font-size:11.5px;background:rgba(0,0,0,.6);border:1px solid rgba(214,178,94,.35);border-radius:999px;padding:6px 10px;white-space:nowrap">—</span></div>
-<div style="display:flex;gap:6px;margin-bottom:8px"><button class="mini" id="HtabShip" style="flex:1">🛸 Ship</button><button class="mini" id="HtabTool" style="flex:1">🔫 Multi-tool</button><button class="mini" id="HtabFrei" style="flex:1">🚢 Freighter</button><button class="mini" id="HtabPet" style="flex:1">🐾 Companion</button></div>
+<div style="display:flex;gap:6px;margin-bottom:8px"><button class="mini" id="HtabAll" style="flex:1">All</button><button class="mini" id="HtabShip" style="flex:1">🛸</button><button class="mini" id="HtabTool" style="flex:1">🔫</button><button class="mini" id="HtabFrei" style="flex:1">🚢</button><button class="mini" id="HtabPet" style="flex:1">🐾</button></div>
+<div id="HGlist" style="padding-bottom:12px"></div>
+<button class="mini" id="HformToggle" style="width:100%;margin-bottom:8px">+ Log new entry</button>
+<div id="HformWrap" style="display:none"><div style="display:flex;gap:6px;margin-bottom:8px"><button class="mini" id="HkShip" style="flex:1">🛸 Ship</button><button class="mini" id="HkTool" style="flex:1">🔫 Tool</button><button class="mini" id="HkFrei" style="flex:1">🚢 Freighter</button><button class="mini" id="HkPet" style="flex:1">🐾 Pet</button></div>
 <div class="frow" id="HformShip" style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:8px">
 <input id="Hs_name" placeholder="Ship name *">
 <input id="Hs_sys" placeholder="System *">
@@ -271,7 +283,7 @@ kbd{background:#000;border:1px solid #333;border-radius:6px;padding:1px 6px;font
 </div>
 <input id="Hnt" placeholder="Notes: colours, reactor, build plan, glyphs…" style="margin-bottom:8px">
 <div class="fbar"><button class="btn primary" id="Hadd" style="flex:1;padding:12px;border-radius:11px;background:linear-gradient(180deg,#e8cd85,#c49c3f);color:#171106;font-weight:800;border:none;font-size:14px">+ Log to hangar</button><button class="btn" id="Hexport" style="flex:0 0 auto;padding:12px;border-radius:11px;border:1px solid rgba(214,178,94,.35);background:transparent;color:var(--text)">⤓</button></div>
-<div id="Hlist" style="padding-bottom:140px"></div>
+</div>
 </div></section>
 <section id="viewFish" style="display:none"><div class="wrap">
 <div style="display:flex;gap:8px;align-items:center;margin:6px 0 10px"><input id="Fq" type="search" placeholder="Search catches…" autocomplete="off" style="flex:1;background:#0a1320;border:1px solid rgba(214,178,94,.25);color:var(--text);padding:11px 13px;border-radius:11px;font-size:14px"><span class="pill" id="Fstats" style="font-size:11.5px;background:rgba(0,0,0,.6);border:1px solid rgba(214,178,94,.35);border-radius:999px;padding:6px 10px;white-space:nowrap">—</span></div>
@@ -299,7 +311,7 @@ kbd{background:#000;border:1px solid #333;border-radius:6px;padding:1px 6px;font
 <button id="expFloat" title="Expansion">&#9432;</button>
 <div class="overlay" id="setOv"><div class="sheet"><div class="sheet-head"><div class="cat">Traveller sigil — Codex settings</div><h2>Settings</h2></div><div class="sheet-body"><div class="sec"><h4>Traveller profile</h4><ul><li><span>Callsign (gamertag)</span><span class="q"><input id="setName" placeholder="e.g. Artemis-7" style="width:130px;background:#060b12;border:1px solid rgba(255,255,255,.15);color:var(--text);border-radius:8px;padding:6px 8px;font-size:12.5px"></span></li><li><span>Avatar emoji</span><span class="q"><input id="setAvatar" placeholder="🧑‍🚀" style="width:60px;background:#060b12;border:1px solid rgba(255,255,255,.15);color:var(--text);border-radius:8px;padding:6px 8px;font-size:14px;text-align:center"></span></li><li class="linkrow" id="setProfileSave"><span>Save profile</span><span class="q">✓</span></li></ul><p class="note" id="setProfileNote" style="margin:6px 0 0"></p></div><div class="sec"><h4>Data (this device)</h4><ul><li class="linkrow" id="setExportAll"><span>Export all data (JSON)</span><span class="q">⤓</span></li><li class="linkrow" id="setClearFav"><span>Clear favourites</span><span class="q">☆</span></li><li class="linkrow" id="setClearLogs"><span>Clear survey + fishing logs</span><span class="q">🗺</span></li><li class="linkrow" id="setWipe"><span>Wipe everything (profile + data)</span><span class="q">✕</span></li></ul><p class="note">Favourites, logs, profile and settings live in this browser only. NMS server / Discoveries sync is not available — Hello Games offers no public API; any future link would need manual import.</p></div><div class="sec"><h4>Display</h4><ul><li><span>Expansions (floating button)</span><span class="q"><input type="checkbox" id="setExp"></span></li><li><span>Color coordination links</span><span class="q"><input type="checkbox" id="setCol"></span></li></ul></div><div class="sec"><h4>Group colors</h4><ul id="setGroups"></ul></div><div class="sec"><h4>Defaults</h4><ul><li class="linkrow" id="setReset"><span>Reset colors to defaults</span><span class="q">R</span></li></ul></div></div><div class="closebar"><button class="btn primary" id="setDone">Done</button></div></div></div>
 <div class="overlay" id="ddOv"><div class="sheet"><div class="sheet-head"><div class="cat">Choose</div><h2 id="ddTitle" style="font-family:Georgia,serif;font-weight:400;font-size:22px;margin:6px 0">Option</h2></div><div class="sheet-body"><div class="sec"><h4>Options</h4><ul id="ddList"></ul></div></div><div class="closebar"><button class="btn primary" id="ddClose">Done</button></div></div></div>
-<footer>ATLAS CODEX v17.02 — expansions + settings · Holiday 7.15 era · unofficial fan companion · <span id="footCount"></span></footer>
+<footer>ATLAS CODEX v17.03 — expansions + settings · Holiday 7.15 era · unofficial fan companion · <span id="footCount"></span></footer>
 
 <script>
 /* Error toast: surfaces load/runtime faults visibly for offline debugging */
@@ -1137,6 +1149,7 @@ const HPREY={
  wealth:{t:"Wealthy T3 trade loop",match:["t5","teleport coord","superconducting fibre","neural duct","vector compressor","quantum accelerator","fusion core"],near:["wealthy","booming","opulent","t3","trade"],hint:"Buy T5 at −20% Buy, sell at +70% Sell across opposite routes (A↔B)."},
  arena:{t:"Arena champion",match:["champion"],near:["arena","holo"],hint:"Holo tables at stations/settlements/outposts; log the exact title in the note."}
 };
+function HGhint(kind){try{const hits=(typeof HGDB!=="undefined"?HGDB:[]).filter(x=>x.k===kind&&String(x.cl||"").toUpperCase()==="S");if(!hits.length)return "";return " Hangar: "+hits.slice(0,3).map(x=>x.n||"Unnamed").join(", ")+(hits.length>3?" +"+(hits.length-3)+" more":"")+" logged S-class — see Hangar tab.";}catch(e){return "";}}
 function Hscore(s,prey,custom){
   const hay=((s.name||"")+" "+Object.values(s.inotes||{}).join(" ")+" "+Object.values(s.env||{}).join(" ")+" "+(s.planets||[]).map(p=>(p.n||"")+" "+(p.b||"")+" "+(p.note||"")+" "+Object.keys(p.pc||{}).filter(k=>p.pc[k]).join(" ")).join(" ")+" "+(s.finds||[]).map(x=>(x.k||"")+" "+(x.n||"")).join(" ")+" "+(s.eco||"")+" "+(s.wea||"")+" "+(s.fac||"")+" "+(s.con||"")).toLowerCase();
   if(typeof custom==="string"&&custom.trim()){
@@ -1145,9 +1158,11 @@ function Hscore(s,prey,custom){
       return {match:hits.length===words.length,near:hits.length>0&&hits.length<words.length,hint:"Free hunt: all words = MATCH, any word = NEAR."};}
   }
   const P=HPREY[prey]||HPREY.exotic;
+  let extra="";
+  if(prey==="exotic")extra=HGhint("ship");
+  if(prey==="tool")extra=HGhint("tool");
   const hasMatch=P.match.some(k=>hay.includes(k)),hasNear=P.near.some(k=>hay.includes(k));
-  return {match:hasMatch,near:!hasMatch&&hasNear,hint:P.hint};
-}
+  return {match:hasMatch,near:!hasMatch&&hasNear,hint:P.hint+extra};}
 function Hrender(){
   const prey=($("Hprey")&&$("Hprey").value)||"exotic",mode=($("Hmode")&&$("Hmode").value)||"both";
   const custom=(($("Hcustom")&&$("Hcustom").value)||"").trim();
@@ -1170,17 +1185,20 @@ function Hrender(){
 /* ---- Hangar log (localStorage voyager-hangar): ships, multi-tools, freighters, companions ---- */
 let HGDB=[];try{HGDB=JSON.parse(localStorage.getItem("voyager-hangar")||"[]")}catch(e){HGDB=[]}
 const HGsave=()=>localStorage.setItem("voyager-hangar",JSON.stringify(HGDB));
-let HGkind="ship";
+let HGkind="all";let HGfilter="all";
 function HGesc(s){return String(s||"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]))}
-function HGtab(k){HGkind=k;[["HtabShip","ship"],["HtabTool","tool"],["HtabFrei","frei"],["HtabPet","pet"]].forEach(([id,kk])=>{const b=document.getElementById(id);if(!b)return;const on=kk===k;b.style.borderColor=on?"var(--teal)":"";b.style.color=on?"var(--teal)":"";const f=document.getElementById({ship:"HformShip",tool:"HformTool",frei:"HformFrei",pet:"HformPet"}[kk]);if(f)f.style.display=on?"grid":"none";});}
+function HGtab(k){if(k==="all")k="ship";HGkind=k;const forms={ship:"HformShip",tool:"HformTool",frei:"HformFrei",pet:"HformPet"};Object.keys(forms).forEach(kk=>{const f=document.getElementById(forms[kk]);if(f)f.style.display=kk===k?"grid":"none";});[["HkShip","ship"],["HkTool","tool"],["HkFrei","frei"],["HkPet","pet"]].forEach(([id,kk])=>{const b=document.getElementById(id);if(!b)return;const on=kk===k;b.classList.toggle("on",on);b.style.borderColor=on?"var(--teal)":"";b.style.color=on?"var(--teal)":"";});}
+function HGpaintFilter(){[["HtabAll","all"],["HtabShip","ship"],["HtabTool","tool"],["HtabFrei","frei"],["HtabPet","pet"]].forEach(([id,kk])=>{const b=document.getElementById(id);if(!b)return;const on=HGfilter===kk;b.classList.toggle("on",on);b.style.borderColor=on?"var(--teal)":"";b.style.color=on?"var(--teal)":"";});}
+function HGsetFilter(k){HGfilter=(HGfilter===k&&k!=="all")?"all":k;if(HGfilter==="all"&&k!=="all")HGfilter=k;HGpaintFilter();HGrender();}
 function HGrender(){
   const q=(document.getElementById('Hq2')||{}).value||"";
   const qq=q.trim().toLowerCase();
   let list=[...HGDB].sort((a,b)=>(b.ts||0)-(a.ts||0));
+  if(HGfilter&&HGfilter!=="all")list=list.filter(x=>x.k===HGfilter);
   if(qq)list=list.filter(x=>((x.n||"")+" "+(x.sy||"")+" "+(x.tp||"")+" "+(x.nt||"")+" "+(x.co||"")+" "+(x.pt||"")).toLowerCase().includes(qq));
   const ships=HGDB.filter(x=>x.k==="ship").length,tools=HGDB.filter(x=>x.k==="tool").length,frei=HGDB.filter(x=>x.k==="frei").length,pets=HGDB.filter(x=>x.k==="pet").length;
   const st=document.getElementById('Hstats');if(st)st.textContent=HGDB.length+" kept · 🛸"+ships+" 🔫"+tools+" 🚢"+frei+" 🐾"+pets;
-  const L=document.getElementById('Hlist');if(!L)return;L.innerHTML="";
+  const L=document.getElementById('HGlist');if(!L)return;L.innerHTML="";
   if(!list.length){L.innerHTML='<div class="empty" style="text-align:center;color:var(--muted);padding:40px 10px">Hangar empty.<br><br>Log your ships, tools, freighters and champions — with coords.</div>';return;}
   const KIN={ship:"🛸",tool:"🔫",frei:"🚢",pet:"🐾"};
   list.forEach(x=>{
@@ -1190,7 +1208,10 @@ function HGrender(){
     L.appendChild(d);
   });
 }
-["HtabShip|ship","HtabTool|tool","HtabFrei|frei","HtabPet|pet"].forEach(pair=>{const p=pair.split("|"),el=document.getElementById(p[0]);if(el)el.onclick=()=>HGtab(p[1]);});
+[["HkShip","ship"],["HkTool","tool"],["HkFrei","frei"],["HkPet","pet"]].forEach(pair=>{const p=pair,id=p[0],k=p[1],el=document.getElementById(id);if(el)el.onclick=()=>HGtab(k);});
+[["HtabAll","all"],["HtabShip","ship"],["HtabTool","tool"],["HtabFrei","frei"],["HtabPet","pet"]].forEach(pair=>{const p=pair,id=p[0],k=p[1],el=document.getElementById(id);if(el)el.onclick=()=>{if(k==="all"){HGfilter="all";HGpaintFilter();HGrender();}else HGsetFilter(k);};});
+{const ft=document.getElementById("HformToggle");if(ft)ft.onclick=()=>{const w=document.getElementById("HformWrap");if(!w)return;const open=w.style.display==="none";w.style.display=open?"":"none";ft.textContent=open?"− Hide entry form":"+ Log new entry";};}
+HGtab("ship");HGfilter="all";HGpaintFilter();
 {const el=document.getElementById("Hq2");if(el)el.oninput=()=>HGrender();}
 document.getElementById('Hadd').onclick=()=>{
   const g=id=>(document.getElementById(id)||{}).value||"";
