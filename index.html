@@ -184,7 +184,7 @@ kbd{background:#000;border:1px solid #333;border-radius:6px;padding:1px 6px;font
 <body>
 <header><div class="wrap">
 <div class="top"><button class="sig" id="setBtn" title="Settings — traveller profile & data" aria-label="Settings"><div>◈</div></button><h1>ATLAS CODEX<small>NO MAN'S SKY COMPANION</small></h1><div class="count" id="count">— items</div></div>
-<div id="tabbar"><button id="tabCodex" class="on">📖 Codex</button><button id="tabSecrets">🧪 Secrets</button><button id="tabLog">🗺️ Survey</button><button id="tabHunt">🎯 Hunt</button><button id="tabFish">🎣 Fishing</button></div>
+<div id="tabbar"><button id="tabCodex" class="on">📖 Codex</button><button id="tabSecrets">🧪 Secrets</button><button id="tabLog">🗺️ Survey</button><button id="tabHunt">🎯 Hunt</button><button id="tabHangar">🛸 Hangar</button><button id="tabFish">🎣 Fishing</button></div>
 <div class="searchrow"><input id="q" type="search" placeholder="Search items, recipes, e.g. chromatic, stasis, tritium…" autocomplete="off"><select id="sort"><option value="name">A–Z</option><option value="valueDesc">Value ↓</option><option value="valueAsc">Value ↑</option></select></div>
 <div class="chips" id="chips"></div>
 </div></header>
@@ -192,7 +192,7 @@ kbd{background:#000;border:1px solid #333;border-radius:6px;padding:1px 6px;font
 
 <div class="wrap">
 <div class="hero"><h2>A traveller's catalogue, bound in starlight.</h2>
-<p><b>Codex v17.01 · expansions + color links · Game: Holiday 7.15.1</b> · Refreshed Nov 2026. Descriptions, base values in <b>Units (u)</b>, crafting, <b>Refiner</b> &amp; <b>Nutrient Processor</b> combinations. Tap any entry for full provenance. ★ = add to your personal expedition favourites (saved on this device). Values are base game values — wealthy systems pay more.</p></div>
+<p><b>Codex v17.02 · expansions + color links · Game: Holiday 7.15.1</b> · Refreshed Nov 2026. Descriptions, base values in <b>Units (u)</b>, crafting, <b>Refiner</b> &amp; <b>Nutrient Processor</b> combinations. Tap any entry for full provenance. ★ = add to your personal expedition favourites (saved on this device). Values are base game values — wealthy systems pay more.</p></div>
 <div class="grid" id="grid"></div>
 <p class="note" style="display:none">To extend: open this file and edit the <kbd>DATABASE</kbd> array at the top of the script — each entry is self-documenting. No build step, works fully offline. Data compiled for the Holiday 7.15 era; treat values as guide, not scripture.</p>
 </div>
@@ -236,6 +236,43 @@ kbd{background:#000;border:1px solid #333;border-radius:6px;padding:1px 6px;font
 <input id="Hq" placeholder="Filter: system, planet, note… (optional)" style="flex:1;background:#0a1320;border:1px solid rgba(214,178,94,.25);color:var(--text);padding:11px 13px;border-radius:11px;font-size:14px;width:100%;margin-bottom:8px">
 <div id="Hlist" style="padding-bottom:140px"></div>
 </div></section>
+<section id="viewHangar" style="display:none"><div class="wrap">
+<div style="display:flex;gap:8px;align-items:center;margin:6px 0 10px"><input id="Hq2" type="search" placeholder="Search hangar…" autocomplete="off" style="flex:1;background:#0a1320;border:1px solid rgba(214,178,94,.25);color:var(--text);padding:11px 13px;border-radius:11px;font-size:14px"><span class="pill" id="Hstats" style="font-size:11.5px;background:rgba(0,0,0,.6);border:1px solid rgba(214,178,94,.35);border-radius:999px;padding:6px 10px;white-space:nowrap">—</span></div>
+<div style="display:flex;gap:6px;margin-bottom:8px"><button class="mini" id="HtabShip" style="flex:1">🛸 Ship</button><button class="mini" id="HtabTool" style="flex:1">🔫 Multi-tool</button><button class="mini" id="HtabFrei" style="flex:1">🚢 Freighter</button><button class="mini" id="HtabPet" style="flex:1">🐾 Companion</button></div>
+<div class="frow" id="HformShip" style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:8px">
+<input id="Hs_name" placeholder="Ship name *">
+<input id="Hs_sys" placeholder="System *">
+<select id="Hs_type"><option>Fighter</option><option>Hauler</option><option>Explorer</option><option>Shuttle</option><option>Solar</option><option>Exotic</option><option>Interceptor</option><option>Living</option><option>Corvette</option></select>
+<select id="Hs_class"><option value="—">Class —</option><option>C</option><option>B</option><option>A</option><option>S</option></select>
+<input id="Hs_slots" placeholder="Slots" inputmode="numeric">
+<input id="Hs_coords" placeholder="Coords (e.g. +12.3, -45.6)">
+<input id="Hs_parts" placeholder="Salvage: wings / cockpit / engine" style="grid-column:1/-1">
+</div>
+<div class="frow" id="HformTool" style="display:none;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:8px">
+<input id="Ht_name" placeholder="Tool name *">
+<input id="Ht_sys" placeholder="System *">
+<select id="Ht_class"><option value="—">Class —</option><option>C</option><option>B</option><option>A</option><option>S</option></select>
+<input id="Ht_slots" placeholder="Slots" inputmode="numeric">
+<input id="Ht_coords" placeholder="Coords (settlement / post)" style="grid-column:1/-1">
+</div>
+<div class="frow" id="HformFrei" style="display:none;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:8px">
+<input id="Hf_name" placeholder="Freighter name *">
+<input id="Hf_sys" placeholder="System *">
+<select id="Hf_class"><option value="—">Class —</option><option>C</option><option>B</option><option>A</option><option>S</option></select>
+<input id="Hf_slots" placeholder="Slots" inputmode="numeric">
+<input id="Hf_coords" placeholder="Coords / rescue warp note" style="grid-column:1/-1">
+</div>
+<div class="frow" id="HformPet" style="display:none;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:8px">
+<input id="Hp_name" placeholder="Companion name *">
+<input id="Hp_species" placeholder="Species *">
+<select id="Hp_class"><option value="—">Class —</option><option>C</option><option>B</option><option>A</option><option>S</option></select>
+<input id="Hp_sys" placeholder="Home system">
+<input id="Hp_arena" placeholder="Arena record (W-L, titles)" style="grid-column:1/-1">
+</div>
+<input id="Hnt" placeholder="Notes: colours, reactor, build plan, glyphs…" style="margin-bottom:8px">
+<div class="fbar"><button class="btn primary" id="Hadd" style="flex:1;padding:12px;border-radius:11px;background:linear-gradient(180deg,#e8cd85,#c49c3f);color:#171106;font-weight:800;border:none;font-size:14px">+ Log to hangar</button><button class="btn" id="Hexport" style="flex:0 0 auto;padding:12px;border-radius:11px;border:1px solid rgba(214,178,94,.35);background:transparent;color:var(--text)">⤓</button></div>
+<div id="Hlist" style="padding-bottom:140px"></div>
+</div></section>
 <section id="viewFish" style="display:none"><div class="wrap">
 <div style="display:flex;gap:8px;align-items:center;margin:6px 0 10px"><input id="Fq" type="search" placeholder="Search catches…" autocomplete="off" style="flex:1;background:#0a1320;border:1px solid rgba(214,178,94,.25);color:var(--text);padding:11px 13px;border-radius:11px;font-size:14px"><span class="pill" id="Fstats" style="font-size:11.5px;background:rgba(0,0,0,.6);border:1px solid rgba(214,178,94,.35);border-radius:999px;padding:6px 10px;white-space:nowrap">—</span></div>
 <div class="frow" style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:8px">
@@ -262,7 +299,7 @@ kbd{background:#000;border:1px solid #333;border-radius:6px;padding:1px 6px;font
 <button id="expFloat" title="Expansion">&#9432;</button>
 <div class="overlay" id="setOv"><div class="sheet"><div class="sheet-head"><div class="cat">Traveller sigil — Codex settings</div><h2>Settings</h2></div><div class="sheet-body"><div class="sec"><h4>Traveller profile</h4><ul><li><span>Callsign (gamertag)</span><span class="q"><input id="setName" placeholder="e.g. Artemis-7" style="width:130px;background:#060b12;border:1px solid rgba(255,255,255,.15);color:var(--text);border-radius:8px;padding:6px 8px;font-size:12.5px"></span></li><li><span>Avatar emoji</span><span class="q"><input id="setAvatar" placeholder="🧑‍🚀" style="width:60px;background:#060b12;border:1px solid rgba(255,255,255,.15);color:var(--text);border-radius:8px;padding:6px 8px;font-size:14px;text-align:center"></span></li><li class="linkrow" id="setProfileSave"><span>Save profile</span><span class="q">✓</span></li></ul><p class="note" id="setProfileNote" style="margin:6px 0 0"></p></div><div class="sec"><h4>Data (this device)</h4><ul><li class="linkrow" id="setExportAll"><span>Export all data (JSON)</span><span class="q">⤓</span></li><li class="linkrow" id="setClearFav"><span>Clear favourites</span><span class="q">☆</span></li><li class="linkrow" id="setClearLogs"><span>Clear survey + fishing logs</span><span class="q">🗺</span></li><li class="linkrow" id="setWipe"><span>Wipe everything (profile + data)</span><span class="q">✕</span></li></ul><p class="note">Favourites, logs, profile and settings live in this browser only. NMS server / Discoveries sync is not available — Hello Games offers no public API; any future link would need manual import.</p></div><div class="sec"><h4>Display</h4><ul><li><span>Expansions (floating button)</span><span class="q"><input type="checkbox" id="setExp"></span></li><li><span>Color coordination links</span><span class="q"><input type="checkbox" id="setCol"></span></li></ul></div><div class="sec"><h4>Group colors</h4><ul id="setGroups"></ul></div><div class="sec"><h4>Defaults</h4><ul><li class="linkrow" id="setReset"><span>Reset colors to defaults</span><span class="q">R</span></li></ul></div></div><div class="closebar"><button class="btn primary" id="setDone">Done</button></div></div></div>
 <div class="overlay" id="ddOv"><div class="sheet"><div class="sheet-head"><div class="cat">Choose</div><h2 id="ddTitle" style="font-family:Georgia,serif;font-weight:400;font-size:22px;margin:6px 0">Option</h2></div><div class="sheet-body"><div class="sec"><h4>Options</h4><ul id="ddList"></ul></div></div><div class="closebar"><button class="btn primary" id="ddClose">Done</button></div></div></div>
-<footer>ATLAS CODEX v17.01 — expansions + settings · Holiday 7.15 era · unofficial fan companion · <span id="footCount"></span></footer>
+<footer>ATLAS CODEX v17.02 — expansions + settings · Holiday 7.15 era · unofficial fan companion · <span id="footCount"></span></footer>
 
 <script>
 /* Error toast: surfaces load/runtime faults visibly for offline debugging */
@@ -727,10 +764,10 @@ const _ps=document.getElementById("setProfileSave");
 if(_ps)_ps.onclick=()=>{try{localStorage.setItem("codex-profile",JSON.stringify({name:_pn? _pn.value.trim():"",avatar:_pa?_pa.value.trim():"🧑‍🚀"}));if(_pnote)_pnote.textContent="Saved on this device.";}catch(e){if(_pnote)_pnote.textContent="Could not save.";}};
 const arm=(id,fn)=>{const el=document.getElementById(id);if(!el)return;el.onclick=()=>{if(el.dataset.arm){try{fn();}finally{el.dataset.arm="";el.querySelector(".q").textContent=el.dataset.q0||"";}}else{el.dataset.arm="1";el.dataset.q0=el.querySelector(".q").textContent;el.querySelector(".q").textContent="Sure?";setTimeout(()=>{if(el.isConnected){el.dataset.arm="";el.querySelector(".q").textContent=el.dataset.q0||"";}},3500);}};};
 arm("setClearFav",()=>{try{localStorage.removeItem("atlas_fav");FAV=new Set();renderChips();render();}catch(e){}});
-arm("setClearLogs",()=>{try{localStorage.removeItem("voyager-log");localStorage.removeItem("voyager-fish");DB=[];FDB=[];save();Fsave();LrenderChips();Lrender();Frender();}catch(e){}});
-arm("setWipe",()=>{try{["atlas_fav","voyager-log","voyager-fish","codex-profile","codex-set"].forEach(k=>localStorage.removeItem(k));location.reload();}catch(e){}});
+arm("setClearLogs",()=>{try{localStorage.removeItem("voyager-log");localStorage.removeItem("voyager-fish");localStorage.removeItem("voyager-hangar");DB=[];FDB=[];HGDB=[];save();Fsave();HGsave();LrenderChips();Lrender();Frender();HGrender();}catch(e){}});
+arm("setWipe",()=>{try{["atlas_fav","voyager-log","voyager-fish","voyager-hangar","codex-profile","codex-set"].forEach(k=>localStorage.removeItem(k));location.reload();}catch(e){}});
 const _ex=document.getElementById("setExportAll");
-if(_ex)_ex.onclick=()=>{try{const all={profile:JSON.parse(localStorage.getItem("codex-profile")||"{}"),favourites:[...FAV],systems:DB,fish:FDB,settings:JSON.parse(localStorage.getItem("codex-set")||"{}"),exported:new Date().toISOString()};const b=new Blob([JSON.stringify(all,null,1)],{type:"application/json"});const a=document.createElement("a");a.href=URL.createObjectURL(b);a.download="atlas-codex-backup.json";a.click();}catch(e){}};
+if(_ex)_ex.onclick=()=>{try{const all={profile:JSON.parse(localStorage.getItem("codex-profile")||"{}"),favourites:[...FAV],systems:DB,fish:FDB,hangar:HGDB,settings:JSON.parse(localStorage.getItem("codex-set")||"{}"),exported:new Date().toISOString()};const b=new Blob([JSON.stringify(all,null,1)],{type:"application/json"});const a=document.createElement("a");a.href=URL.createObjectURL(b);a.download="atlas-codex-backup.json";a.click();}catch(e){}};
 }catch(e){}
 document.getElementById("setOv").addEventListener("click",e=>{if(e.target.id==="setOv")document.getElementById("setOv").classList.remove("open")});
 document.getElementById("setExp").onchange=e=>{SET.exp=e.target.checked;saveSet();const ef=document.getElementById("expFloat");if(ef)ef.style.display=(SET.exp&&current&&xText(current))?"grid":"none"};
@@ -1130,10 +1167,47 @@ function Hrender(){
     d.onclick=()=>{showTab('l');LopenSys(s.id);};L.appendChild(d);
   });
 }
+/* ---- Hangar log (localStorage voyager-hangar): ships, multi-tools, freighters, companions ---- */
+let HGDB=[];try{HGDB=JSON.parse(localStorage.getItem("voyager-hangar")||"[]")}catch(e){HGDB=[]}
+const HGsave=()=>localStorage.setItem("voyager-hangar",JSON.stringify(HGDB));
+let HGkind="ship";
+function HGesc(s){return String(s||"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]))}
+function HGtab(k){HGkind=k;[["HtabShip","ship"],["HtabTool","tool"],["HtabFrei","frei"],["HtabPet","pet"]].forEach(([id,kk])=>{const b=document.getElementById(id);if(!b)return;const on=kk===k;b.style.borderColor=on?"var(--teal)":"";b.style.color=on?"var(--teal)":"";const f=document.getElementById({ship:"HformShip",tool:"HformTool",frei:"HformFrei",pet:"HformPet"}[kk]);if(f)f.style.display=on?"grid":"none";});}
+function HGrender(){
+  const q=(document.getElementById('Hq2')||{}).value||"";
+  const qq=q.trim().toLowerCase();
+  let list=[...HGDB].sort((a,b)=>(b.ts||0)-(a.ts||0));
+  if(qq)list=list.filter(x=>((x.n||"")+" "+(x.sy||"")+" "+(x.tp||"")+" "+(x.nt||"")+" "+(x.co||"")+" "+(x.pt||"")).toLowerCase().includes(qq));
+  const ships=HGDB.filter(x=>x.k==="ship").length,tools=HGDB.filter(x=>x.k==="tool").length,frei=HGDB.filter(x=>x.k==="frei").length,pets=HGDB.filter(x=>x.k==="pet").length;
+  const st=document.getElementById('Hstats');if(st)st.textContent=HGDB.length+" kept · 🛸"+ships+" 🔫"+tools+" 🚢"+frei+" 🐾"+pets;
+  const L=document.getElementById('Hlist');if(!L)return;L.innerHTML="";
+  if(!list.length){L.innerHTML='<div class="empty" style="text-align:center;color:var(--muted);padding:40px 10px">Hangar empty.<br><br>Log your ships, tools, freighters and champions — with coords.</div>';return;}
+  const KIN={ship:"🛸",tool:"🔫",frei:"🚢",pet:"🐾"};
+  list.forEach(x=>{
+    const d=document.createElement("div");d.className="fishrow";
+    d.innerHTML='<div><b>'+HGesc(x.n||"Unnamed")+'</b> <span class="ftag">'+(KIN[x.k]||"·")+' '+(HGesc(x.tp||"")||x.k)+(x.cl&&x.cl!=="—"?" · Class "+HGesc(x.cl):"")+(x.sl?" · "+HGesc(x.sl)+" slots":"")+'</span><span>'+(x.co?"📍 "+HGesc(x.co):"")+(x.sy?" · "+HGesc(x.sy):"")+(x.pt?" · "+HGesc(x.pt):"")+'</span>'+(x.nt?'<span class="fnote">'+HGesc(x.nt)+'</span>':"")+'</div><button class="mini danger" style="border:1px solid #a33;background:#060b12;color:#f2a0a0;border-radius:9px;padding:9px 10px">×</button>';
+    d.querySelector("button").onclick=()=>{const btn=d.querySelector("button");if(btn.dataset.arm){HGDB=HGDB.filter(y=>y.id!==x.id);HGsave();HGrender();return;}btn.dataset.arm="1";btn.textContent="Sure?";setTimeout(()=>{if(btn.isConnected){btn.dataset.arm="";btn.textContent="×";}},3500);};
+    L.appendChild(d);
+  });
+}
+["HtabShip|ship","HtabTool|tool","HtabFrei|frei","HtabPet|pet"].forEach(pair=>{const p=pair.split("|"),el=document.getElementById(p[0]);if(el)el.onclick=()=>HGtab(p[1]);});
+{const el=document.getElementById("Hq2");if(el)el.oninput=()=>HGrender();}
+document.getElementById('Hadd').onclick=()=>{
+  const g=id=>(document.getElementById(id)||{}).value||"";
+  const trim=s=>String(s||"").trim();
+  let rec=null;
+  if(HGkind==="ship"){if(!trim(g('Hs_name'))&&!trim(g('Hs_sys'))){alert("Give the ship at least a name or a system.");return;}rec={k:"ship",n:trim(g('Hs_name')),sy:trim(g('Hs_sys')),tp:trim(g('Hs_type')),cl:g('Hs_class'),sl:trim(g('Hs_slots')),co:trim(g('Hs_coords')),pt:trim(g('Hs_parts')),nt:trim(g('Hnt'))};["Hs_name","Hs_sys","Hs_slots","Hs_coords","Hs_parts"].forEach(id=>{document.getElementById(id).value="";});}
+  else if(HGkind==="tool"){if(!trim(g('Ht_name'))&&!trim(g('Ht_sys'))){alert("Give the tool at least a name or a system.");return;}rec={k:"tool",n:trim(g('Ht_name')),sy:trim(g('Ht_sys')),tp:"Multi-tool",cl:g('Ht_class'),sl:trim(g('Ht_slots')),co:trim(g('Ht_coords')),pt:"",nt:trim(g('Hnt'))};["Ht_name","Ht_sys","Ht_slots","Ht_coords"].forEach(id=>{document.getElementById(id).value="";});}
+  else if(HGkind==="frei"){if(!trim(g('Hf_name'))&&!trim(g('Hf_sys'))){alert("Give the freighter at least a name or a system.");return;}rec={k:"frei",n:trim(g('Hf_name')),sy:trim(g('Hf_sys')),tp:"Freighter",cl:g('Hf_class'),sl:trim(g('Hf_slots')),co:trim(g('Hf_coords')),pt:"",nt:trim(g('Hnt'))};["Hf_name","Hf_sys","Hf_slots","Hf_coords"].forEach(id=>{document.getElementById(id).value="";});}
+  else{if(!trim(g('Hp_name'))&&!trim(g('Hp_species'))){alert("Give the companion at least a name or a species.");return;}rec={k:"pet",n:trim(g('Hp_name')),sy:trim(g('Hp_sys')),tp:trim(g('Hp_species')),cl:g('Hp_class'),sl:"",co:"",pt:trim(g('Hp_arena')),nt:trim(g('Hnt'))};["Hp_name","Hp_species","Hp_sys","Hp_arena"].forEach(id=>{document.getElementById(id).value="";});}
+  document.getElementById("Hnt").value="";
+  rec.id="h"+Date.now();rec.ts=Date.now();HGDB.push(rec);HGsave();HGrender();
+};
+document.getElementById('Hexport').onclick=()=>{const b=new Blob([JSON.stringify(HGDB,null,1)],{type:"application/json"});const a=document.createElement("a");a.href=URL.createObjectURL(b);a.download="voyager-hangar.json";a.click();};
 /* ---- Tabs ---- */
-const tabC=document.getElementById('tabCodex'),tabL=document.getElementById('tabLog'),tabF=document.getElementById('tabFish'),tabS=document.getElementById('tabSecrets'),tabH=document.getElementById('tabHunt');
-function showTab(w){document.getElementById('viewCodex').style.display=(w==='c'||w==='s')?'':'none';document.getElementById('viewLog').style.display=w==='l'?'':'none';document.getElementById('viewFish').style.display=w==='f'?'':'none';document.getElementById('viewHunt').style.display=w==='h'?'':'none';tabC.classList.toggle('on',w==='c');tabL.classList.toggle('on',w==='l');tabF.classList.toggle('on',w==='f');tabS.classList.toggle('on',w==='s');if(tabH)tabH.classList.toggle('on',w==='h');if(w==='l'){LrenderChips();Lrender();}if(w==='f'){Frender();}if(w==='h'){Hrender();}if(w==='s'){activeCat='Secrets';q.value='';renderChips();render();}}
-tabC.onclick=()=>{activeCat='All';renderChips();render();showTab('c')};tabL.onclick=()=>showTab('l');tabF.onclick=()=>showTab('f');tabS.onclick=()=>showTab('s');if(tabH)tabH.onclick=()=>showTab('h');
+const tabC=document.getElementById('tabCodex'),tabL=document.getElementById('tabLog'),tabF=document.getElementById('tabFish'),tabS=document.getElementById('tabSecrets'),tabH=document.getElementById('tabHunt'),tabG=document.getElementById('tabHangar');
+function showTab(w){document.getElementById('viewCodex').style.display=(w==='c'||w==='s')?'':'none';document.getElementById('viewLog').style.display=w==='l'?'':'none';document.getElementById('viewFish').style.display=w==='f'?'':'none';document.getElementById('viewHunt').style.display=w==='h'?'':'none';document.getElementById('viewHangar').style.display=w==='g'?'':'none';tabC.classList.toggle('on',w==='c');tabL.classList.toggle('on',w==='l');tabF.classList.toggle('on',w==='f');tabS.classList.toggle('on',w==='s');if(tabH)tabH.classList.toggle('on',w==='h');if(tabG)tabG.classList.toggle('on',w==='g');if(w==='l'){LrenderChips();Lrender();}if(w==='f'){Frender();}if(w==='h'){Hrender();}if(w==='g'){HGrender();}if(w==='s'){activeCat='Secrets';q.value='';renderChips();render();}}
+tabC.onclick=()=>{activeCat='All';renderChips();render();showTab('c')};tabL.onclick=()=>showTab('l');tabF.onclick=()=>showTab('f');tabS.onclick=()=>showTab('s');if(tabH)tabH.onclick=()=>showTab('h');if(tabG)tabG.onclick=()=>showTab('g');
 ["Hprey","Hmode"].forEach(id=>{const el=document.getElementById(id);if(el)el.onchange=()=>Hrender();});
 {const el=document.getElementById("Hq");if(el)el.oninput=()=>Hrender();}
 {const el=document.getElementById("Hcustom");if(el)el.oninput=()=>Hrender();}
